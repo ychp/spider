@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="async" />
+        <module name="cache" />
+        <module name="code-builder" />
+        <module name="common" />
+        <module name="file" />
+        <module name="handlebars" />
+        <module name="mybatis" />
+        <module name="redis" />
+        <module name="session" />
+        <module name="user" />
+        <module name="user-api" />
+        <module name="web" />
+        <module name="web-tools" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="async" target="1.8" />
+      <module name="blog" target="1.8" />
+      <module name="blog-api" target="1.8" />
+      <module name="cache" target="1.8" />
+      <module name="code-builder" target="1.8" />
+      <module name="common" target="1.8" />
+      <module name="elaticsearch" target="1.8" />
+      <module name="file" target="1.8" />
+      <module name="handlebars" target="1.8" />
+      <module name="markdown" target="1.8" />
+      <module name="msg" target="1.8" />
+      <module name="mybatis" target="1.8" />
+      <module name="redis" target="1.8" />
+      <module name="session" target="1.8" />
+      <module name="spider" target="1.8" />
+      <module name="user" target="1.8" />
+      <module name="user-api" target="1.8" />
+      <module name="web" target="1.8" />
+      <module name="web-tools" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

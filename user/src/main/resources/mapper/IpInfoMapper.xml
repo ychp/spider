@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ ~ Author:  yingchengpeng
+ ~ Date: 2018/08/11
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="IpInfo">
+    <resultMap id="IpInfoMap" type="IpInfo">
+        <id column="id" property="id"/>
+        <result column="ip" property="ip"/>
+        <result column="country" property="country"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        
+    </resultMap>
+
+    <sql id="tb">
+        `sky_ip_info`
+    </sql>
+
+    <sql id="cols_all">
+        `id`, <include refid="cols_exclude_id"/>
+    </sql>
+
+    <sql id="cols_exclude_id">
+        `ip`, `country`, `province`, `city`, `created_at`, `updated_at` 
+    </sql>
+
+    <sql id="vals">
+         #{ip}, #{country}, #{province}, #{city}, now(), now()
+    </sql>
+
+    <insert id="create" parameterType="IpInfo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="tb"/>
+        (<include refid="cols_exclude_id"/>)
+        VALUES
+        (<include refid="vals"/>)
+    </insert>
+
+    <select id="findByIp" parameterType="string" resultMap="IpInfoMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM <include refid="tb"/>
+        WHERE `ip` = #{ip} LIMIT 1
+    </select>
+
+    <select id="findByIps" parameterType="list" resultMap="IpInfoMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM <include refid="tb"/>
+        WHERE `ip` IN
+        <foreach collection="list" item="ip" open="(" separator="," close=")">
+            #{ip}
+        </foreach>
+    </select>
+</mapper>

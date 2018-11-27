@@ -1,0 +1,49 @@
+package {{package}}.server.service;
+
+import com.ychp.common.exception.ResponseException;
+import {{package}}.model.{{modelName}};
+import {{package}}.impl.server.repository.{{modelName}}Repository;
+import {{package}}.service.{{modelName}}WriteService;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+/**
+* @author yingchengpeng
+* @date 2018-08-09
+*/
+@Service
+public class {{modelName}}WriteServiceImpl implements {{modelName}}WriteService {
+
+    @Autowired
+    private {{modelName}}Repository {{modelParam}}Repository;
+
+    @Override
+    public Long create({{modelName}} {{modelParam}}) {
+        try {
+            {{modelParam}}Repository.create({{modelParam}});
+            return {{modelParam}}.getId();
+        } catch (Exception e) {
+            throw new ResponseException("{{modelParam}}.create.fail", e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public Boolean update({{modelName}} {{modelParam}}) {
+        try {
+            return {{modelParam}}Repository.update({{modelParam}});
+        } catch (Exception e) {
+            throw new ResponseException("{{modelParam}}.update.fail", e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        try {
+            return {{modelParam}}Repository.delete(id);
+        } catch (Exception e) {
+            throw new ResponseException("{{modelParam}}.delete.fail", e.getMessage(), e.getCause());
+        }
+    }
+
+}

@@ -1,0 +1,45 @@
+package {{package}}.server.service;
+
+import com.ychp.common.exception.InvalidException;
+import com.ychp.common.exception.ResponseException;
+import com.ychp.common.model.paging.Paging;
+import {{package}}.dto.query.{{modelName}}Criteria;
+import {{package}}.model.{{modelName}};
+import {{package}}.impl.server.repository.{{modelName}}Repository;
+import {{package}}.service.{{modelName}}ReadService;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+/**
+* @author yingchengpeng
+* @date 2018-08-09
+*/
+@Service
+public class {{modelName}}ReadServiceImpl implements {{modelName}}ReadService {
+
+    @Autowired
+    private {{modelName}}Repository {{modelParam}}Repository;
+
+    @Override
+    public {{modelName}} findById(Long id) {
+        if(id == null) {
+            throw new InvalidException("{{modelParam}}.id.empty", "id", id);
+        }
+        try {
+            return {{modelParam}}Repository.findById(id);
+        } catch (Exception e) {
+            throw new ResponseException("{{modelParam}}.find.fail", e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public Paging<{{modelName}}> paging({{modelName}}Criteria criteria) {
+        try {
+            return {{modelParam}}Repository.paging(criteria.toMap());
+        } catch (Exception e) {
+            throw new ResponseException("{{modelParam}}.paging.fail", e.getMessage(), e.getCause());
+        }
+    }
+
+}

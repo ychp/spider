@@ -1,0 +1,102 @@
+server:
+  port: 8084
+  ssl:
+    enabled: false
+
+spring:
+  application:
+    name: web
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog_new?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: anywhere
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 300
+  resources:
+    static-locations: classpath:/webapp/static
+  profiles:
+    active: dev
+
+
+mybatis:
+  typeAliasesPackage: com.ychp.user.model, com.ychp.blog.model
+  mapperLocations: classpath*:mapper/*Mapper.xml
+
+logging:
+  file: /Users/yingchengpeng/Documents/log/blog/web/root.log
+
+email:
+  host: ${EMAIL_HOST:stmp.qq.com}
+  userName: ${EMAIL_USER_NAME}
+  password: ${EMAIL_PASSWORD}
+  templates:
+    - key: email.user.register.code
+      title: 用户注册
+      content: >
+        用户注册, 您的验证码为{{code}}.
+    - key: email.user.forget.password
+      title: 忘记密码
+      content: >
+        身份验证, 您的验证码为{{code}}.
+
+api:
+  ip:
+    address:
+      type: 1
+      apiKey:
+
+file:
+  type: cos
+  cos:
+    secretId: AKID0ufEbm6IOUSEoFDZR7MTP9i5GF2dKVrr
+    secretKey: 4xgEakjaDfyJct9NZm7Tjp01quthJj18
+    appId: 1251319144
+    bucketName: spider
+    region: ap-shanghai
+
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  pool:
+    max-active: 300
+    max-idle: 100
+    max-wait: 1000
+  database: 4
+  timeout: 100000
+
+cache.type: redis
+
+session:
+  cookie-domain: yingchengpeng.win
+  cookie-max-age: 1800
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    pool:
+      max-active: 300
+      max-idle: 100
+      max-wait: 1000
+    database: 4
+    timeout: 10000
+
+es:
+  hots: 127.0.0.1
+  port: 9300
+  cluster-name: ychp
+  timeout: 10
+
+search:
+  article-index: articles
+  article-type: article
+
+mail:
+  smtp: smtp.qq.com
+  useSSL: true
+  port: 587
+  address: ychp@yingchengpeng.com
+  user: ychp@yingchengpeng.com
+  password: yvdtkyuuratwbdge
+  receiver: ychp0117@sina.com
+  isUsed: true

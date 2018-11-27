@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ ~ Author:  yingchengpeng
+ ~ Date: 2018/08/11
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="DeviceInfo">
+    <resultMap id="DeviceInfoMap" type="DeviceInfo">
+        <id column="id" property="id"/>
+        <result column="os" property="os"/>
+        <result column="browser" property="browser"/>
+        <result column="browser_version" property="browserVersion"/>
+        <result column="device" property="device"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        
+    </resultMap>
+
+    <sql id="tb">
+        `sky_device_info`
+    </sql>
+
+    <sql id="cols_all">
+        `id`, <include refid="cols_exclude_id"/>
+    </sql>
+
+    <sql id="cols_exclude_id">
+        `os`, `browser`, `browser_version`, `device`, `created_at`, `updated_at` 
+    </sql>
+
+    <sql id="vals">
+         #{os}, #{browser}, #{browserVersion}, #{device}, now(), now()
+    </sql>
+
+    <select id="findById" parameterType="long" resultMap="DeviceInfoMap">
+        SELECT
+            <include refid="cols_all"/>
+        FROM <include refid="tb"/>
+        WHERE `id` = #{id} LIMIT 1
+    </select>
+
+    <select id="findByIds" parameterType="list" resultMap="DeviceInfoMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM <include refid="tb"/>
+        WHERE `id` IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="create" parameterType="DeviceInfo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="tb"/>
+        (<include refid="cols_exclude_id"/>)
+        VALUES
+        (<include refid="vals"/>)
+    </insert>
+
+    <select id="findByUniqueInfo" parameterType="map" resultMap="DeviceInfoMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM <include refid="tb"/>
+        WHERE `os` = #{os}
+          AND `browser` = #{browser}
+          AND `browser_version` = #{browserVersion}
+          AND `device` = #{device} LIMIT 1
+    </select>
+
+</mapper>

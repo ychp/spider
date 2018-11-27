@@ -1,0 +1,33 @@
+package {{package}}.model;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+* @author yingchengpeng
+* @date {{#formatDate currentDate}}{{/formatDate}}
+*/
+@ApiModel(description = "{{tableRemarks}}")
+@ToString
+@EqualsAndHashCode(of = { {{#each columns}}{{#if needEquals}} "{{javaColumn}}",{{/if}}{{/each}} })
+public class {{modelName}} implements Serializable {
+    private static final long serialVersionUID = -1L;
+
+    @Getter
+    @Setter
+    @ApiModelProperty("主键")
+    private {{primaryColumn.javaType}} {{primaryColumn.javaColumn}};
+{{#each columns}}
+    @Getter
+    @Setter
+    @ApiModelProperty("{{comment}}")
+    private {{javaType}} {{javaColumn}};
+{{/each}}
+}

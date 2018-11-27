@@ -1,0 +1,78 @@
+server:
+  port: 8099
+  ssl:
+    enabled: false
+
+spring:
+  application:
+    name: web
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:blog-api}?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: ${MYSQL_NAME:root}
+    password: ${MYSQL_PASSWORD:anywhere}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 300
+
+mybatis:
+  type-aliases-package: com.ychp.user.model, com.ychp.blog.model
+  mapper-locations: classpath*:mapper/*Mapper.xml
+
+logging:
+  file: /var/log/blog/root.log
+
+file:
+  type: ${FILE_TYPE:}
+  cos:
+    secretId: ${COS_SECRET_ID:}
+    secretKey: ${COS_SECRET_KEY:}
+    appId: ${COS_APP_ID:}
+    bucketName: ${COS_BUCKET_NAME:}
+    region: ${COS_REGION:}
+
+redis:
+  host: ${REDIS_HOST:127.0.0.1}
+  port: ${REDIS_PORT:6379}
+  password: ${REDIS_AUTH:anywhere}
+  pool:
+    max-active: 300
+    max-idle: 100
+    max-wait: 1000
+  database: 1
+  timeout: 100000
+
+cache.type: redis
+
+session:
+  cookie-domain: yingchengpeng.com
+  cookie-max-age: 1800
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_AUTH:anywhere}
+    pool:
+      max-active: 300
+      max-idle: 100
+      max-wait: 1000
+    database: 1
+    timeout: 100000
+
+es:
+  host: ${ES_HOST:127.0.0.1}
+  port: ${ES_PORT:9300}
+  cluster-name: ${ES_CLUSTER_NAME:ychp}
+  timeout: 10
+
+search:
+  article-index: testarticles
+  article-type: article
+
+mail:
+  smtp: smtp.qq.com
+  useSSL: true
+  port: 587
+  address: ychp@yingchengpeng.com
+  user: ychp@yingchengpeng.com
+  password: yvdtkyuuratwbdge
+  receiver: ychp0117@sina.com
+  isUsed: true
