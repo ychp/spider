@@ -44,6 +44,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ychp</groupId>
+            <artifactId>spider-web-front</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>

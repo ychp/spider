@@ -1,0 +1,7 @@
+/user   :get,post,put
+/user/.*   :get,post,put
+/api/users/.*   :get,post,put
+
+/bloger   :get,post,put
+/bloger/.*   :get,post,put
+/api/bloger/.*   :get,post,put

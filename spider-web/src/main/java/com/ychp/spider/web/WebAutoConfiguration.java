@@ -10,7 +10,9 @@ import com.ychp.file.cos.CosAutoConfiguration;
 import com.ychp.redis.RedisAutoConfiguration;
 import com.ychp.session.SkySessionAutoConfiguration;
 import com.ychp.spider.web.cache.impl.BlogDataExtServiceImpl;
+import com.ychp.spider.web.freemarker.FreeMarkerConfiguration;
 import com.ychp.spider.web.interceptors.SessionInterceptor;
+import com.ychp.spider.web.resolver.ExceptionHandlerResolver;
 import com.ychp.user.UserApiAutoConfig;
 import com.ychp.user.UserAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.config.annotation.*;
+
+import java.util.List;
 
 /**
  * @author yingchengpeng
@@ -37,8 +39,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
         CacheAutoConfiguration.class,
         SkySessionAutoConfiguration.class,
         UserApiAutoConfig.class,
-        UserAutoConfiguration.class})
-public class WebAutoConfiguration extends WebMvcConfigurerAdapter {
+        UserAutoConfiguration.class,
+        FreeMarkerConfiguration.class})
+public class WebAutoConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
     public SessionInterceptor sessionInterceptor() {
@@ -56,11 +59,26 @@ public class WebAutoConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        super.addResourceHandlers(registry);
+    }
 
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    @Override
+    protected void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/error").setViewName("error");
+        registry.addViewController("/login").setViewName("login");
+
+        registry.addViewController("/index").setViewName("index");
+        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/album-detail").setViewName("album-detail");
+
+        super.addViewControllers(registry);
+    }
+
+    @Override
+    protected void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+        exceptionResolvers.add(new ExceptionHandlerResolver());
+        super.configureHandlerExceptionResolvers(exceptionResolvers);
     }
 
     @Bean

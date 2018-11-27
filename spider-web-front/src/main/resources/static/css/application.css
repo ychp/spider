@@ -1,0 +1,66 @@
+.application-list-wrapper {
+    position: relative;
+    background-color: #fff;
+    overflow: hidden
+}
+
+.application-list-wrapper .application-list-external-events {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 20px 20px 999px;
+    margin-bottom: -999px
+}
+
+@media (max-width: 1024px) {
+    .application-list-wrapper .application-list-external-events {
+        float: none;
+        width: 100%;
+        padding-bottom: 20px;
+        margin-bottom: 0
+    }
+}
+
+.application-list-wrapper .application-list-external-events .external-event {
+    padding: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    height: 50px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    background-color: #2baab1
+}
+
+.application-list-wrapper .application-list-external-events .add-new-event {
+    float: right;
+    margin-top: 2px;
+    color: #fff;
+    transition: color .2s ease;
+    -webkit-transition: color .2s ease;
+    -moz-transition: color .2s ease;
+    -ms-transition: color .2s ease;
+    -o-transition: color .2s ease
+}
+
+.application-list-wrapper .application-list-external-events .add-new-event:focus, .application-list-wrapper .application-list-external-events .add-new-event:hover {
+    color: #2baab1;
+    transition: color .2s ease;
+    -webkit-transition: color .2s ease;
+    -moz-transition: color .2s ease;
+    -ms-transition: color .2s ease;
+    -o-transition: color .2s ease
+}
+
+.application-list-wrapper .application-list-body {
+    float: left;
+    width: 100%;
+    padding: 20px
+}
+
+@media (max-width: 1024px) {
+    .application-list-wrapper .application-list-body {
+        float: none;
+        width: 100%
+    }
+}
