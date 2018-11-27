@@ -9,19 +9,19 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>web</module>
-        <module>user-api</module>
-        <module>common</module>
-        <module>user</module>
-        <module>redis</module>
-        <module>code-builder</module>
-        <module>handlebars</module>
-        <module>mybatis</module>
-        <module>web-tools</module>
-        <module>file</module>
-        <module>async</module>
-        <module>cache</module>
-        <module>session</module>
+        <module>spider-web</module>
+        <module>spider-user-api</module>
+        <module>spider-common</module>
+        <module>spider-user</module>
+        <module>spider-redis</module>
+        <module>spider-code-builder</module>
+        <module>spider-handlebars</module>
+        <module>spider-mybatis</module>
+        <module>spider-file</module>
+        <module>spider-async</module>
+        <module>spider-cache</module>
+        <module>spider-session</module>
+        <module>spider-web-starter</module>
     </modules>
 
     <properties>
@@ -41,7 +41,7 @@
         <mybatis-spring.version>1.3.2</mybatis-spring.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
         <hibernate.version>5.2.4.Final</hibernate.version>
-        <jackson.version>2.8.7</jackson.version>
+        <jackson.version>2.8.11</jackson.version>
 
         <springfox.version>2.9.2</springfox.version>
         <swagger.version>1.5.20</swagger.version>
