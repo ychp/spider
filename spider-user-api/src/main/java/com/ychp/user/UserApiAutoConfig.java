@@ -1,6 +1,5 @@
 package com.ychp.user;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,8 +11,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UserApiAutoConfig {
 
-	@Bean
-	public AddressCacher addressCacher() {
-		return new AddressCacher();
-	}
 }

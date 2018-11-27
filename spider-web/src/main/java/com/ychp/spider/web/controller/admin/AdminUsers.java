@@ -29,7 +29,7 @@ public class AdminUsers {
 
     @ApiOperation("用户详情接口")
     @GetMapping("{id}/findById")
-    public UserVO detail(@ApiParam(example = "1") @PathVariable Long id) {
+    public User detail(@ApiParam(example = "1") @PathVariable Long id) {
         return userReadService.findDetailById(id);
     }
 
