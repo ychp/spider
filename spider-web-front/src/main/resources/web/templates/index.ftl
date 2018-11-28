@@ -18,7 +18,7 @@
 
 </#macro>
 <#macro overrideContainer>
-<div class="section bg-white section-padding" id="howItWorkSection" style="min-height: 500px;">
+<div class="section bg-white section-padding" id="howItWorkSection" style="min-height: 100%; margin-top: -70px; padding-top: 140px">
     <div class="container">
         <div class="text-center">
             <h3 class="text-upper no-m-top">START Manage YOUR <span class="text-success">BLOG APPLICATION</span></h3>
@@ -66,7 +66,10 @@
 </div>
 </#macro>
 
-<@layout head=overrideHead container=overrideContainer >
+<#macro overrideFoot>
+</#macro>
+
+<@layout head=overrideHead container=overrideContainer foot=overrideFoot >
 </@layout>
 
 
