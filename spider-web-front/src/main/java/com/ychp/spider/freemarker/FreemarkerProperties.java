@@ -1,6 +1,5 @@
-package com.ychp.spider.web.freemarker;
+package com.ychp.spider.freemarker;
 
-import org.springframework.boot.autoconfigure.freemarker.FreeMarkerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -15,8 +14,8 @@ import java.util.Map;
  */
 @Primary
 @Component
-@ConfigurationProperties(prefix = "spring.freemarker")
-public class FreemarkerProperties extends FreeMarkerProperties {
+@ConfigurationProperties(prefix = "custom.freemarker")
+public class FreemarkerProperties {
 
     private Map<String,Object> variables = new HashMap<String, Object>();
 

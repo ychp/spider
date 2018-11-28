@@ -9,10 +9,10 @@ import com.ychp.common.captcha.CaptchaGenerator;
 import com.ychp.file.cos.CosAutoConfiguration;
 import com.ychp.redis.RedisAutoConfiguration;
 import com.ychp.session.SkySessionAutoConfiguration;
+import com.ychp.spider.freemarker.FreeMarkerConfiguration;
+import com.ychp.spider.resolver.ExceptionHandlerResolver;
 import com.ychp.spider.web.cache.impl.BlogDataExtServiceImpl;
-import com.ychp.spider.web.freemarker.FreeMarkerConfiguration;
 import com.ychp.spider.web.interceptors.SessionInterceptor;
-import com.ychp.spider.web.resolver.ExceptionHandlerResolver;
 import com.ychp.user.UserApiAutoConfig;
 import com.ychp.user.UserAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.util.List;
 
@@ -31,7 +34,6 @@ import java.util.List;
  * @date 2018-08-09
  */
 @ComponentScan
-@EnableWebMvc
 @EnableScheduling
 @Configuration
 @Import({CosAutoConfiguration.class,
@@ -65,12 +67,10 @@ public class WebAutoConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     protected void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/error").setViewName("error");
         registry.addViewController("/login").setViewName("login");
 
         registry.addViewController("/index").setViewName("index");
         registry.addViewController("/").setViewName("index");
-        registry.addViewController("/album-detail").setViewName("album-detail");
 
         super.addViewControllers(registry);
     }
@@ -80,6 +80,7 @@ public class WebAutoConfiguration extends WebMvcConfigurationSupport {
         exceptionResolvers.add(new ExceptionHandlerResolver());
         super.configureHandlerExceptionResolvers(exceptionResolvers);
     }
+
 
     @Bean
     public CaptchaGenerator captchaGenerator() {

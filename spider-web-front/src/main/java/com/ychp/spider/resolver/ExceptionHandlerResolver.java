@@ -1,4 +1,4 @@
-package com.ychp.spider.web.resolver;
+package com.ychp.spider.resolver;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;

@@ -34,7 +34,7 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <mysql-connector-java.version>5.1.39</mysql-connector-java.version>
         <hikari.version>2.4.6</hikari.version>
-        <spring-boot.version>1.5.10.RELEASE</spring-boot.version>
+        <spring-boot.version>1.5.15.RELEASE</spring-boot.version>
         <spring.version>4.3.14.RELEASE</spring.version>
 
         <jedis.version>2.7.3</jedis.version>

@@ -65,7 +65,8 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
                                 "/webjars.*",
                                 "/error",
                                 "/csrf",
-                                "/index");
+                                "/index",
+                                "/");
                     }
                 });
 
