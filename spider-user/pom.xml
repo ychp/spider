@@ -20,19 +20,12 @@
 
         <dependency>
             <groupId>com.ychp</groupId>
-            <artifactId>spider-cache</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>cache</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.ychp</groupId>
-            <artifactId>spider-mybatis</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
+            <artifactId>mybatis</artifactId>
         </dependency>
 
         <dependency>

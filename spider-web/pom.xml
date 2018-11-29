@@ -21,26 +21,22 @@
 
         <dependency>
             <groupId>com.ychp</groupId>
-            <artifactId>spider-file</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>file</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.ychp</groupId>
-            <artifactId>spider-async</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>async</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.ychp</groupId>
-            <artifactId>spider-cache</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>cache</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.ychp</groupId>
-            <artifactId>spider-session</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>session</artifactId>
         </dependency>
 
         <dependency>

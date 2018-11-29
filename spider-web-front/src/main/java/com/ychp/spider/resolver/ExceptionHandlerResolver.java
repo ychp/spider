@@ -3,7 +3,7 @@ package com.ychp.spider.resolver;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
-import com.ychp.common.exception.JsonResponseException;
+import com.ychp.common.exception.ResponseException;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -51,8 +51,8 @@ public class ExceptionHandlerResolver extends ExceptionHandlerExceptionResolver 
             try {
                 int status = 500;
                 String message = exception.getMessage();
-                if(exception instanceof JsonResponseException){
-                    status = ((JsonResponseException)exception).getStatus();
+                if(exception instanceof ResponseException){
+                    status = ((ResponseException)exception).getStatus();
                 }
                 ResponseStatus responseStatusAnn = AnnotationUtils.findAnnotation(exception.getClass(), ResponseStatus.class);
                 if (responseStatusAnn != null) {

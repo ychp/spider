@@ -3,7 +3,7 @@ package com.ychp.spider.web.controller.common.file;
 import com.ychp.common.exception.ResponseException;
 import com.ychp.common.util.SessionContextUtils;
 import com.ychp.file.FileServer;
-import com.ychp.file.bean.request.MultipartFileRequest;
+import com.ychp.file.request.MultipartFileRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

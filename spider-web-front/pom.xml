@@ -15,8 +15,7 @@
 
         <dependency>
             <groupId>com.ychp</groupId>
-            <artifactId>spider-common</artifactId>
-            <version>${project.version}</version>
+            <artifactId>common</artifactId>
         </dependency>
 
         <dependency>
