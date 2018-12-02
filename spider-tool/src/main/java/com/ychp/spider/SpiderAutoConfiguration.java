@@ -1,14 +1,13 @@
-package com.ychp.user;
+package com.ychp.spider;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @author yingchengpeng
- * @date 2018/8/10
+ * @date 2018-12-02
  */
-@ComponentScan
 @Configuration
-public class UserApiAutoConfig {
-
+@ComponentScan
+public class SpiderAutoConfiguration {
 }

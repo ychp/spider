@@ -8,13 +8,13 @@ import com.ychp.cache.ext.DataExtService;
 import com.ychp.common.captcha.CaptchaGenerator;
 import com.ychp.file.cos.CosAutoConfiguration;
 import com.ychp.session.SkySessionAutoConfiguration;
-import com.ychp.spider.freemarker.FreeMarkerConfiguration;
+import com.ychp.spider.SpiderAutoConfiguration;
+import com.ychp.spider.freemarker.FreeMarkerBeanPostProcessor;
 import com.ychp.spider.resolver.ExceptionHandlerResolver;
 import com.ychp.spider.web.cache.impl.BlogDataExtServiceImpl;
 import com.ychp.spider.web.interceptors.LoginCheckInterceptor;
 import com.ychp.spider.web.interceptors.SessionInterceptor;
 import com.ychp.spring.boot.starter.redis.RedisAutoConfiguration;
-import com.ychp.user.UserApiAutoConfig;
 import com.ychp.user.UserAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,9 +40,9 @@ import java.util.List;
         RedisAutoConfiguration.class,
         CacheAutoConfiguration.class,
         SkySessionAutoConfiguration.class,
-        UserApiAutoConfig.class,
         UserAutoConfiguration.class,
-        FreeMarkerConfiguration.class})
+        SpiderAutoConfiguration.class,
+        FreeMarkerBeanPostProcessor.class})
 public class WebAutoConfiguration extends WebMvcConfigurationSupport {
 
     @Bean
