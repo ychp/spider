@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Rule">
-    <resultMap id="listMap" type="Rule" >
+    <resultMap id="RuleMap" type="Rule">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="key_words" property="keyWords"/>
+        <result column="url" property="url"/>
+        <result column="main_image" property="mainImage"/>
+        <result column="parser_id" property="parserId"/>
+        <result column="status" property="status"/>
+        <result column="image_count" property="imageCount"/>
+        <result column="video_count" property="videoCount"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
     <sql id="tableName">`rules`</sql>
 
     <sql id="columns">
-        (`user_id`,`name`,`code`,`url`,`main_image`,`parser_id`,`status`,`image_count`,`video_count`,`extra`,`created_at`,`updated_at`)
+        (`user_id`,`name`,`code`,`key_words`,`url`,`main_image`,`parser_id`,`status`,`image_count`,`video_count`,`created_at`,`updated_at`)
     </sql>
 
     <insert id="create" parameterType="Rule" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO <include refid="tableName"/><include refid="columns"/>
-        VALUES (#{userId},#{name},#{code},#{url},#{mainImage},#{parserId},#{status},#{imageCount},#{videoCount},#{extra},now(),now())
+        INSERT INTO
+        <include refid="tableName"/>
+        <include refid="columns"/>
+        VALUES
+        (#{userId},#{name},#{code},#{keyWords},#{url},#{mainImage},#{parserId},#{status},#{imageCount},#{videoCount},now(),now())
     </insert>
 
-    <update id="update" parameterType="Rule" >
-        UPDATE <include refid="tableName"/>
+    <update id="update" parameterType="Rule">
+        UPDATE
+        <include refid="tableName"/>
         SET
         <if test="name!=null">`name`=#{name},</if>
         <if test="code!=null">`code`=#{code},</if>
+        <if test="keyWords!=null">`key_words`=#{keyWords},</if>
         <if test="url!=null">`url`=#{url},</if>
         <if test="mainImage!=null">`main_image`=#{mainImage},</if>
         <if test="parserId!=null">`parser_id`=#{parserId},</if>
@@ -33,74 +51,85 @@
 
     <sql id="criteria">
         WHERE 1=1
-            <if test="id != null">AND `id`=#{id}</if>
-            <if test="userId != null">AND `user_id`=#{userId}</if>
-            <if test="ids != null">AND `id` IN
-                <foreach collection="ids" item="item" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="name!=null">AND `name`=#{name}</if>
-            <if test="code!=null">AND `code`=#{code}</if>
-            <if test="url!=null">AND `parser_id`=#{url}</if>
-            <if test="parserId!=null">AND `url`=#{parserId}</if>
-            <if test="statuses!=null">AND `status` IN
-                <foreach collection="statuses" item="item" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="nostatus!=null">AND `status` != #{nostatus}</if>
-            <if test="nostatuses!=null">AND `status` NOT IN
-                <foreach collection="nostatuses" item="item" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="status!=null">AND `status`=#{status}</if>
-            <if test="extraNotEmpty!=null">AND `extra` is NOT NULL AND `extra` != ''</if>
+        <if test="id != null">AND `id`=#{id}</if>
+        <if test="userId != null">AND `user_id`=#{userId}</if>
+        <if test="ids != null">AND `id` IN
+            <foreach collection="ids" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="name!=null">AND `name`=#{name}</if>
+        <if test="code!=null">AND `code`=#{code}</if>
+        <if test="url!=null">AND `parser_id`=#{url}</if>
+        <if test="parserId!=null">AND `url`=#{parserId}</if>
+        <if test="statuses!=null">AND `status` IN
+            <foreach collection="statuses" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="nostatus!=null">AND `status` != #{nostatus}</if>
+        <if test="nostatuses!=null">AND `status` NOT IN
+            <foreach collection="nostatuses" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="status!=null">AND `status`=#{status}</if>
+        <if test="extraNotEmpty!=null">AND `extra` is NOT NULL AND `extra` != ''</if>
         AND `status` != -3
     </sql>
 
-    <select id="findById" parameterType="long" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/> WHERE id = #{id}
+    <select id="findById" parameterType="long" resultMap="RuleMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        WHERE id = #{id}
     </select>
 
-    <select id="findByIds" parameterType="list" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/> WHERE id in
+    <select id="findByIds" parameterType="list" resultMap="RuleMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        WHERE id in
         <foreach collection="ids" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
 
-    <update id="delete" >
-        UPDATE <include refid="tableName"/> SET `status` = -3, `updated_at` = now() WHERE id=#{id}
+    <update id="delete">
+        UPDATE
+        <include refid="tableName"/>
+        SET `status` = -3, `updated_at` = now() WHERE id=#{id}
     </update>
 
     <select id="count" parameterType="map" resultType="long">
-        SELECT count(*) FROM <include refid="tableName"/>
+        SELECT count(*) FROM
+        <include refid="tableName"/>
         <include refid="criteria"/>
     </select>
 
-    <select id="paging" parameterType="map" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/>
+    <select id="paging" parameterType="map" resultMap="RuleMap">
+        SELECT * FROM
+        <include refid="tableName"/>
         <include refid="criteria"/>
         ORDER BY id DESC
         LIMIT #{offset},#{limit}
     </select>
 
-    <select id="list" parameterType="map" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/>
+    <select id="list" parameterType="map" resultMap="RuleMap">
+        SELECT * FROM
+        <include refid="tableName"/>
         <include refid="criteria"/>
         ORDER BY id DESC
     </select>
 
-    <update id="updateStatus" parameterType="map" >
-        UPDATE <include refid="tableName"/>
+    <update id="updateStatus" parameterType="map">
+        UPDATE
+        <include refid="tableName"/>
         SET `status`=#{status},`updated_at`= now()
         WHERE id = #{id}
     </update>
 
-    <update id="updateStatusByIds" parameterType="map" >
-        UPDATE <include refid="tableName"/>
+    <update id="updateStatusByIds" parameterType="map">
+        UPDATE
+        <include refid="tableName"/>
         SET `status`=#{status},`updated_at`= now()
         WHERE id IN
         <foreach collection="ids" item="item" open="(" separator="," close=")">
@@ -108,13 +137,16 @@
         </foreach>
     </update>
 
-    <update id="updateCount" parameterType="map" >
-        UPDATE <include refid="tableName"/>
+    <update id="updateCount" parameterType="map">
+        UPDATE
+        <include refid="tableName"/>
         SET `image_count`=#{imageCount},`video_count`=#{videoCount},`updated_at`= now()
         WHERE id = #{id}
     </update>
 
-    <select id="findByCode" parameterType="string" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/> WHERE `code` = #{code}
+    <select id="findByCode" parameterType="string" resultMap="RuleMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        WHERE `code` = #{code}
     </select>
 </mapper>

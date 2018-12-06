@@ -2,11 +2,12 @@ package com.ychp.spider.resolver;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.MediaType;
 import com.ychp.common.exception.ResponseException;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
@@ -19,6 +20,7 @@ import java.lang.reflect.Method;
 
 /**
  * Desc:
+ *
  * @author yingchengpeng
  * Date: 16/7/31
  */
@@ -28,13 +30,16 @@ public class ExceptionHandlerResolver extends ExceptionHandlerExceptionResolver 
 
     @PostConstruct
     public void init() {
-        if(Strings.isNullOrEmpty(this.defaultErrorView)) {
+        if (Strings.isNullOrEmpty(this.defaultErrorView)) {
             this.defaultErrorView = "/error";
         }
     }
 
     @Override
-    protected ModelAndView doResolveHandlerMethodException(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod, Exception exception) {
+    protected ModelAndView doResolveHandlerMethodException(HttpServletRequest request,
+                                                           HttpServletResponse response,
+                                                           HandlerMethod handlerMethod,
+                                                           Exception exception) {
 
         if (handlerMethod == null) {
             return null;
@@ -47,22 +52,23 @@ public class ExceptionHandlerResolver extends ExceptionHandlerExceptionResolver 
         }
 
         ResponseBody responseBodyAnn = AnnotationUtils.findAnnotation(method, ResponseBody.class);
-        if (responseBodyAnn != null) {
+        RestController restController = AnnotationUtils.findAnnotation(handlerMethod.getBean().getClass(), RestController.class);
+        if (responseBodyAnn != null || restController != null) {
             try {
                 int status = 500;
                 String message = exception.getMessage();
-                if(exception instanceof ResponseException){
-                    status = ((ResponseException)exception).getStatus();
+                if (exception instanceof ResponseException) {
+                    status = ((ResponseException) exception).getStatus();
                 }
                 ResponseStatus responseStatusAnn = AnnotationUtils.findAnnotation(exception.getClass(), ResponseStatus.class);
                 if (responseStatusAnn != null) {
-                    return new ModelAndView(this.defaultErrorView, ImmutableMap.of("status", responseStatusAnn.value().value(), "message", responseStatusAnn.reason()));
+                    return new ModelAndView(this.defaultErrorView,
+                            ImmutableMap.of("status", responseStatusAnn.value().value(), "message", responseStatusAnn.reason()));
 
                 }
-                //ajax or restful request
                 PrintWriter out = null;
                 try {
-                    response.setContentType(MediaType.JSON_UTF_8.toString());
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     response.setStatus(status);
                     out = response.getWriter();
                     out.print(message);

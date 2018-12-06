@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" class="navbar-brand"><strong><span class="text-success">FM</span>Manager</strong></a>
+            <a href="/" class="navbar-brand"><strong><span class="text-success">Spider</span> Manager</strong></a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
@@ -37,7 +37,7 @@
                     <#elseif online.name??>
                         <li class="btn-link"><a href="/" class="btn btn-sm">${online.name}</a></li>
                     </#if>
-                    <li class="btn-link"><a id="logout" href="javascript:void();" class="btn btn-sm" >Logout</a></li>
+                    <li class="btn-link"><a id="logout" href="javascript:void();" class="btn btn-sm" >注销</a></li>
                 <#else>
 
                 </#if>

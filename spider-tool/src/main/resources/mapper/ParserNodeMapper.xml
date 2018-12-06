@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="ParserNode">
-    <resultMap id="listMap" type="ParserNode" >
+    <resultMap id="ParserNodeMap" type="ParserNode">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="key" property="key"/>
+        <result column="video_tag" property="videoTag"/>
+        <result column="image_tag" property="imageTag"/>
+        <result column="text_tag" property="textTag"/>
+        <result column="sub_tag" property="subTag"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
     <sql id="tableName">`parser_node`</sql>
 
     <sql id="columns">
-        (`user_id`,`name`,`key`,`key_words`,`video_tag`,`image_tag`,`text_tag`,`sub_tag`,`created_at`,`updated_at`)
+        (`user_id`,`name`,`key`,`video_tag`,`image_tag`,`text_tag`,`sub_tag`,`created_at`,`updated_at`)
     </sql>
 
     <insert id="create" parameterType="ParserNode" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO <include refid="tableName"/><include refid="columns"/>
-        VALUES (#{userId},#{name},#{key},#{keyWords},#{videoTag},#{imageTag},#{textTag},#{subTag},now(),now())
+        INSERT INTO
+        <include refid="tableName"/>
+        <include refid="columns"/>
+        VALUES (#{userId},#{name},#{key},#{videoTag},#{imageTag},#{textTag},#{subTag},now(),now())
     </insert>
 
-    <update id="update" parameterType="ParserNode" >
-        UPDATE <include refid="tableName"/>
+    <update id="update" parameterType="ParserNode">
+        UPDATE
+        <include refid="tableName"/>
         SET
         <if test="name!=null">`name`=#{name},</if>
         <if test="key!=null">`key`=#{key},</if>
-        <if test="keyWords!=null">`key_words`=#{keyWords},</if>
         <if test="videoTag!=null">`video_tag`=#{videoTag},</if>
         <if test="imageTag!=null">`image_tag`=#{imageTag},</if>
         <if test="textTag!=null">`text_tag`=#{textTag},</if>
@@ -31,33 +43,42 @@
 
     <sql id="criteria">
         WHERE 1=1
-            <if test="id != null">AND `id`=#{id}</if>
-            <if test="userId != null">AND `user_id`=#{userId}</if>
-            <if test="name!=null">AND `name`=#{name}</if>
-            <if test="key!=null">AND `key`=#{key}</if>
+        <if test="id != null">AND `id`=#{id}</if>
+        <if test="userId != null">AND `user_id`=#{userId}</if>
+        <if test="name!=null">AND `name`=#{name}</if>
+        <if test="key!=null">AND `key`=#{key}</if>
     </sql>
 
-    <select id="findById" parameterType="long" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/> WHERE id = #{id}
+    <select id="findById" parameterType="long" resultMap="ParserNodeMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        WHERE id = #{id}
     </select>
 
-    <delete id="delete" >
-        DELETE FROM <include refid="tableName"/> WHERE id=#{id}
+    <delete id="delete">
+        DELETE FROM
+        <include refid="tableName"/>
+        WHERE id=#{id}
     </delete>
 
     <select id="count" parameterType="map" resultType="long">
-        SELECT count(*) FROM <include refid="tableName"/>
+        SELECT count(*) FROM
+        <include refid="tableName"/>
         <include refid="criteria"/>
     </select>
 
-    <select id="paging" parameterType="map" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/>
-        <include refid="criteria"/> ORDER BY id DESC
+    <select id="paging" parameterType="map" resultMap="ParserNodeMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        <include refid="criteria"/>
+        ORDER BY id DESC
         LIMIT #{offset},#{limit}
     </select>
 
-    <select id="list" parameterType="map" resultMap="listMap">
-        SELECT * FROM <include refid="tableName"/>
-        <include refid="criteria"/> ORDER BY id DESC
+    <select id="list" parameterType="map" resultMap="ParserNodeMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        <include refid="criteria"/>
+        ORDER BY id DESC
     </select>
 </mapper>

@@ -26,8 +26,6 @@ public class ParserNode implements Serializable {
 
     private String key;
 
-    private String keyWords;
-
     private String videoTag;
 
     private String imageTag;
@@ -40,25 +38,28 @@ public class ParserNode implements Serializable {
 
     private Date updatedAt;
 
-    public String getTags(){
+    public String getTags() {
         StringBuilder tags = new StringBuilder();
         Set<String> set = Sets.newHashSet();
-        if(!StringUtils.isEmpty(this.videoTag)){
+        if (!StringUtils.isEmpty(this.videoTag)) {
             set.addAll(Arrays.asList(this.videoTag.split(",")));
         }
-        if(!StringUtils.isEmpty(this.imageTag)){
+        if (!StringUtils.isEmpty(this.imageTag)) {
             set.addAll(Arrays.asList(this.imageTag.split(",")));
         }
-        if(!StringUtils.isEmpty(this.textTag)){
+        if (!StringUtils.isEmpty(this.textTag)) {
             set.addAll(Arrays.asList(this.textTag.split(",")));
         }
-        if(!StringUtils.isEmpty(this.subTag)){
+        if (!StringUtils.isEmpty(this.subTag)) {
             set.addAll(Arrays.asList(this.subTag.split(",")));
         }
-        for(String str : set) {
+        for (String str : set) {
             tags.append(str).append(",");
         }
 
-        return tags.substring(0, tags.length()-1);
+        if (tags.length() == 0) {
+            return "";
+        }
+        return tags.substring(0, tags.length() - 1);
     }
 }

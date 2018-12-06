@@ -71,7 +71,7 @@ public class Spider {
             Parser parser = parserRegistry.getParser(node.getKey());
 
             Map<String, String> ruleValues = Maps.newHashMap();
-            ruleValues.put("keywords", node.getKeyWords());
+            ruleValues.put("keywords", rule.getKeyWords());
             ruleValues.put("videoTag", node.getVideoTag());
             ruleValues.put("imageTag", node.getImageTag());
             ruleValues.put("textTag", node.getTextTag());

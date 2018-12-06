@@ -73,11 +73,11 @@ public class WebAutoConfiguration extends WebMvcConfigurationSupport {
         super.addViewControllers(registry);
     }
 
-    @Override
-    protected void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
-        exceptionResolvers.add(new ExceptionHandlerResolver());
-        super.configureHandlerExceptionResolvers(exceptionResolvers);
-    }
+//    @Override
+//    protected void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+//        exceptionResolvers.add(new ExceptionHandlerResolver());
+//        super.configureHandlerExceptionResolvers(exceptionResolvers);
+//    }
 
 
     @Bean

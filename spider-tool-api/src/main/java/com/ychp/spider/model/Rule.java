@@ -25,6 +25,8 @@ public class Rule implements Serializable {
 
     private String url;
 
+    private String keyWords;
+
     private String mainImage;
 
     private Long parserId;

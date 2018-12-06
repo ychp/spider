@@ -17,25 +17,6 @@ CREATE TABLE IF NOT EXISTS `sky_user` (
   KEY `idx_user_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户表';
 
-DROP TABLE IF EXISTS `rules`;
-
-CREATE TABLE IF NOT EXISTS `rules` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NOT NULL COMMENT '用户Id',
-  `name` varchar(4096) DEFAULT NULL COMMENT '名称',
-  `code` varchar(128) DEFAULT NULL,
-  `url` varchar(256) DEFAULT NULL COMMENT '爬虫地址',
-  `main_image` varchar(512) DEFAULT NULL COMMENT '主图',
-  `parser_id` bigint(20) DEFAULT NULL,
-  `status` tinyint(4) DEFAULT NULL COMMENT '状态:0.初始化, 1.等待抓取数据, 2.抓取数据完毕，-1.抓取数据出错',
-  `image_count` int(8) DEFAULT NULL,
-  `video_count` int(8) DEFAULT NULL,
-  `extra` text,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-PRIMARY KEY (`id`),
-UNIQUE KEY `uq_rules_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `parser_node`;
 
@@ -44,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `parser_node` (
   `user_id` bigint(20) NOT NULL COMMENT '用户Id',
   `name` varchar(256) DEFAULT NULL COMMENT '名称',
   `key` varchar(256) DEFAULT NULL COMMENT 'key',
-  `key_words` varchar(256) DEFAULT NULL COMMENT '关键字',
   `video_tag` varchar(256) DEFAULT NULL COMMENT '视频标签',
   `image_tag` varchar(256) DEFAULT NULL COMMENT '图片标签',
   `text_tag` varchar(256) DEFAULT NULL COMMENT '文本标签',
@@ -52,6 +32,26 @@ CREATE TABLE IF NOT EXISTS `parser_node` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
 PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `rules`;
+
+CREATE TABLE IF NOT EXISTS `rules` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL COMMENT '用户Id',
+  `name` varchar(4096) DEFAULT NULL COMMENT '名称',
+  `code` varchar(128) DEFAULT NULL,
+  `key_words` varchar(256) DEFAULT NULL COMMENT '关键字',
+  `url` varchar(256) DEFAULT NULL COMMENT '爬虫地址',
+  `main_image` varchar(512) DEFAULT NULL COMMENT '主图',
+  `parser_id` bigint(20) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL COMMENT '状态:0.初始化, 1.等待抓取数据, 2.抓取数据完毕，-1.抓取数据出错',
+  `image_count` int(8) DEFAULT NULL,
+  `video_count` int(8) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+PRIMARY KEY (`id`),
+UNIQUE KEY `uq_rules_code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `spider_data`;
