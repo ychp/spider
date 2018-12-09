@@ -73,7 +73,7 @@ public class Parsers {
         if(!"admin".equals(SessionContextUtils.currentUser().getName())) {
             criteria.setJustAdmin(false);
         }
-        log.info("criteria", criteria.toMap());
+        log.info("criteria = {}", criteria.toMap());
         model.addAttribute("types", parserTypeReadService.list(criteria));
         return "parser-edit";
     }
