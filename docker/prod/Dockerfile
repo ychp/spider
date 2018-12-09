@@ -1,5 +1,5 @@
 FROM openjdk:8
-ADD blog.jar application.jar
+ADD spider.jar application.jar
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
