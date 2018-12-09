@@ -19,7 +19,7 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String uri = request.getRequestURI();
 
-        if(uri.trim().startsWith("/api") || "/login".equalsIgnoreCase(uri.trim())) {
+        if(uri.trim().startsWith("/api") || "/login".equalsIgnoreCase(uri.trim()) || "login".equalsIgnoreCase(uri.trim())) {
             return true;
         }
 
