@@ -8,27 +8,24 @@ import java.util.Objects;
  * @author yingchengpeng
  * @date 2018/12/2
  */
-public enum RuleStatus {
+public enum TaskStatus {
     //
-    INIT(0,"初始化"),
-    WAITING(1,"抓取数据中"),
-    FINISH(2,"抓取数据完毕"),
-    DOWNLOAD(3,"下载图片数据完毕"),
-    DOWNLOAD_ALL(4,"下载所有数据完毕"),
-    ERROR(-1,"抓取数据出错");
+    INIT(0,"待抓取"),
+    PROCESS(1,"抓取中"),
+    FINISH(2,"抓取完成");
 
     @Getter
     private int value;
 
     private String desc;
 
-    RuleStatus(Integer value, String desc){
+    TaskStatus(Integer value, String desc){
         this.value = value;
         this.desc = desc;
     }
 
-    public static RuleStatus fromValue(int value){
-        for(RuleStatus status : RuleStatus.values()){
+    public static TaskStatus fromValue(int value){
+        for(TaskStatus status : TaskStatus.values()){
             if(Objects.equals(status.getValue(), value)){
                 return status;
             }
@@ -37,7 +34,7 @@ public enum RuleStatus {
     }
 
     public static String getDescFromValue(int value){
-        for(RuleStatus status : RuleStatus.values()){
+        for(TaskStatus status : TaskStatus.values()){
             if(Objects.equals(status.getValue(), value)){
                 return status.toString();
             }

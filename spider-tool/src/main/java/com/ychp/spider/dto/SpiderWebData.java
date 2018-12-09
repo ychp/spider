@@ -1,6 +1,8 @@
 package com.ychp.spider.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -13,17 +15,16 @@ public class SpiderWebData implements Serializable {
 
     private static final long serialVersionUID = -8511819220238823672L;
 
-    private String dataRef;
-
     private String content;
 
     private String url;
 
     private String source;
 
-    private String keyword;
+    private Integer type;
 
-    private String type;
+    private String path;
 
     private Integer level;
+
 }

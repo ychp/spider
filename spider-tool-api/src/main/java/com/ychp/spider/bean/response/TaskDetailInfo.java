@@ -10,25 +10,28 @@ import java.util.Date;
  * @date 2018/12/9
  */
 @Data
-public class ParserDetailInfo implements Serializable {
+public class TaskDetailInfo implements Serializable {
 
     private static final long serialVersionUID = -8103599768992979631L;
 
     private Long id;
 
+    private Long userId;
+
+    private Long parserId;
+
     private String name;
 
     private String url;
 
-    private Long parserTypeId;
-
-    private String parserType;
-
-    private String parserTypeKey;
-
     private String spiderRule;
+
+    private Integer status;
+
+    private String statusStr;
 
     private Date createdAt;
 
     private Date updatedAt;
+
 }

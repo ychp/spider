@@ -4,11 +4,10 @@ import com.ychp.async.publisher.AsyncPublisher;
 import com.ychp.common.model.paging.Paging;
 import com.ychp.spider.bean.request.DataCriteria;
 import com.ychp.spider.enums.DataType;
+import com.ychp.spider.image.core.WriterRegistry;
 import com.ychp.spider.model.SpiderData;
 import com.ychp.spider.service.SpiderDataReadService;
 import com.ychp.spider.service.SpiderDataWriteService;
-import com.ychp.spider.image.core.WriterRegistry;
-import com.ychp.spider.web.async.DataCountEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -53,9 +52,7 @@ public class DataApis {
             writerRegistry.getWriter("defaultWriter").deleteImage(spiderData.getPath());
         }
 
-        Boolean deleted = spiderDataWriteService.delete(id);
-        asyncPublisher.post(new DataCountEvent(id));
-        return deleted;
+        return spiderDataWriteService.delete(id);
     }
 
     /**

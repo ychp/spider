@@ -5,9 +5,9 @@ import com.ychp.common.exception.ResponseException;
 import com.ychp.spider.model.Parser;
 import com.ychp.spider.repository.ParserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -19,16 +19,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 @Service
 public class ParserWriteServiceImpl implements ParserWriteService {
 
-    @Autowired
+    @Resource
     private ParserRepository parserRepository;
 
     @Override
     public Boolean create(Parser parser) {
         try {
             return parserRepository.create(parser);
-        } catch (IllegalArgumentException e) {
-            log.error("save parser fail, parser = {}, error = {}", parser, Throwables.getStackTraceAsString(e));
-            throw new ResponseException(e.getMessage());
+        } catch (Exception e) {
+            log.error("create parser fail, parser = {}, error = {}", parser, Throwables.getStackTraceAsString(e));
+            throw new ResponseException("parser.create.fail");
         }
     }
 
@@ -36,9 +36,9 @@ public class ParserWriteServiceImpl implements ParserWriteService {
     public Boolean update(Parser parser) {
         try {
             return parserRepository.update(parser);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             log.error("update parser fail, rule = {}, error = {}", parser, Throwables.getStackTraceAsString(e));
-            throw new ResponseException(e.getMessage());
+            throw new ResponseException("parser.update.fail");
         }
     }
 
@@ -52,6 +52,9 @@ public class ParserWriteServiceImpl implements ParserWriteService {
         } catch (IllegalArgumentException e) {
             log.error("delete parser fail, id = {}, error = {}", id, Throwables.getStackTraceAsString(e));
             throw new ResponseException(e.getMessage());
+        } catch (Exception e) {
+            log.error("delete parser fail, id = {}, error = {}", id, Throwables.getStackTraceAsString(e));
+            throw new ResponseException("parser.delete.fail");
         }
     }
 }

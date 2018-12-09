@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="Parser">
-    <resultMap id="ParserMap" type="Parser">
+<mapper namespace="Task">
+    <resultMap id="TaskMap" type="Task">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
-        <result column="name" property="name"/>
+        <result column="parser_id" property="parserId"/>
         <result column="url" property="url"/>
-        <result column="parser_type_id" property="parserTypeId"/>
         <result column="spider_rule" property="spiderRule"/>
+        <result column="status" property="status"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
-    <sql id="tableName">`spider_parser`</sql>
+    <sql id="tableName">`spider_task`</sql>
 
     <sql id="columns">
-        (`user_id`,`name`,`url`,`parser_type_id`,`spider_rule`,`created_at`,`updated_at`)
+        (`user_id`,`parser_id`,`url`,`spider_rule`,`status`,`created_at`,`updated_at`)
     </sql>
 
-    <insert id="create" parameterType="Parser" keyProperty="id" useGeneratedKeys="true">
+    <insert id="create" parameterType="Task" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         <include refid="tableName"/>
         <include refid="columns"/>
-        VALUES (#{userId},#{name},#{url},#{parserTypeId},#{spiderRule},now(),now())
+        VALUES (#{userId},#{parserId},#{url},#{spiderRule},#{status},now(),now())
     </insert>
 
-    <update id="update" parameterType="Parser">
+    <update id="update" parameterType="Task">
         UPDATE
         <include refid="tableName"/>
         SET
-        <if test="name!=null">`name`=#{name},</if>
-        <if test="url!=null">`url`=#{url},</if>
-        <if test="spiderRule!=null">`spider_rule`=#{spiderRule},</if>
+        <if test="status!=null">`status`=#{status},</if>
         `updated_at`= now()
         WHERE id = #{id}
     </update>
@@ -40,23 +38,14 @@
         WHERE 1=1
         <if test="id != null">AND `id`=#{id}</if>
         <if test="userId != null">AND `user_id`=#{userId}</if>
-        <if test="name!=null">AND `name` like CONCAT(#{name}, '%')</if>
-        <if test="parserTypeId != null">AND `parser_type_id`=#{parserTypeId}</if>
+        <if test="status!=null">AND `status` = #{status}</if>
+        <if test="parserId != null">AND `parser_id`=#{parserId}</if>
     </sql>
 
-    <select id="findById" parameterType="long" resultMap="ParserMap">
+    <select id="findById" parameterType="long" resultMap="TaskMap">
         SELECT * FROM
         <include refid="tableName"/>
         WHERE id = #{id}
-    </select>
-
-    <select id="findByIds" parameterType="list" resultMap="ParserMap">
-        SELECT * FROM
-        <include refid="tableName"/>
-        WHERE id in
-        <foreach collection="list" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
     </select>
 
     <delete id="delete">
@@ -71,7 +60,7 @@
         <include refid="criteria"/>
     </select>
 
-    <select id="paging" parameterType="map" resultMap="ParserMap">
+    <select id="paging" parameterType="map" resultMap="TaskMap">
         SELECT * FROM
         <include refid="tableName"/>
         <include refid="criteria"/>
@@ -79,10 +68,4 @@
         LIMIT #{offset},#{limit}
     </select>
 
-    <select id="list" parameterType="map" resultMap="ParserMap">
-        SELECT * FROM
-        <include refid="tableName"/>
-        <include refid="criteria"/>
-        ORDER BY id DESC
-    </select>
 </mapper>

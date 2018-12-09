@@ -19,8 +19,7 @@
                     </#if>
                 </#if>
                 <li><a href="/parsers">爬虫</a></li>
-                <li><a href="/rules">Rules</a></li>
-                <li><a href="/datas">Datas</a></li>
+                <li><a href="/tasks">任务</a></li>
                 <#if isAdmin??>
                     <#if isAdmin>
                         <li><a href="/albums">Album</a></li>

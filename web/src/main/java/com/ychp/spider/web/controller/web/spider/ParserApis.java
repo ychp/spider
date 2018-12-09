@@ -38,7 +38,7 @@ public class ParserApis {
     }
 
     /**
-     * 详情页
+     * 删除
      */
     @DeleteMapping(value = "/{id}")
     public Boolean delete(@PathVariable("id") Long id) {

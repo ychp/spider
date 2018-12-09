@@ -18,9 +18,11 @@ public class ParserInfo implements Serializable {
 
     private String name;
 
+    private String url;
+
     private Long parserTypeId;
 
-    private String  parserType;
+    private String parserType;
 
     private Date createdAt;
 

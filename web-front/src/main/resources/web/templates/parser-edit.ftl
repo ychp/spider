@@ -69,10 +69,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label">地址</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="url" value="${parser.url!}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">规则</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="spiderRule"
-                                               value="${parser.spiderRule}">
+                                        <textarea class="form-control" name="spiderRule">${parser.spiderRule}</textarea>
                                     </div>
                                 </div>
                             <#else>
@@ -94,9 +99,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label">地址</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="url" value="http://">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">规则</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="spiderRule" value="">
+                                        <textarea class="form-control" name="spiderRule"></textarea>
                                     </div>
                                 </div>
                             </#if>
@@ -128,8 +139,9 @@
             }
 
             data['name'] = $("input[name=name]").val();
+            data['url'] = $("input[name=url]").val();
             data['parserTypeId'] = $("select[name=parserType]").val();
-            data['spiderRule'] = $("input[name=spiderRule]").val();
+            data['spiderRule'] = $("textarea[name=spiderRule]").val();
 
             $.ajax({
                 url: url,

@@ -19,7 +19,4 @@ public interface SpiderDataReadService {
 
     List<AlbumDto> findAlbum();
 
-    SpiderData findBy(String content, String url, Long ruleId);
-
-    List<SpiderData> findByRuleId(Long ruleId);
 }

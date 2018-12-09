@@ -2,7 +2,7 @@
 <#include "taglib/pagination.ftl">
 <#macro overrideHead>
 <meta charset="utf-8">
-<title>${title}-爬虫</title>
+<title>${title}-任务</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -40,10 +40,7 @@
     <div class="smart-widget" style="border: 0px;background-color: transparent;box-shadow: none;">
         <div class="smart-widget-header"
              style="margin-top:10px;height: 50px;line-height:30px;padding-top: 7px;padding-bottom: 7px;">
-            爬虫管理 (${parsers.total})
-            <span class="smart-widget-option">
-                <a href="/parser" class="btn btn-success" style="color: #fff;" target="_blank">添加</a>
-            </span>
+            爬虫任务管理 (${tasks.total})
         </div>
 
         <div class="smart-widget-inner">
@@ -53,32 +50,35 @@
                     <tr>
                         <th>ID</th>
                         <th>名称</th>
-                        <th>类型</th>
+                        <th>状态</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                        <#list parsers.datas as parser>
+                        <#list tasks.datas as task>
                         <tr>
-                            <td style="width: 5%">${parser.id}</td>
+                            <td style="width: 5%">${task.id}</td>
                             <td style="width: 30%; max-height: 30px; max-width:400px; overflow: hidden; word-break: normal;"
-                                title="${parser.name}">${parser.name}</td>
-                            <td style="width: 30%">${parser.parserType!}</td>
-                            <td style="width: 15%;">${parser.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
-                            <td style="width: 20%">
-                                <a class="btn btn-sm btn-success" href="/parser?id=${parser.id}"
-                                   target="_self">编辑</a>
-                                <a class="btn btn-sm btn-success" href="/${parser.id}/parser-detail"
-                                   target="_self">详情</a>
-                                <a class="btn btn-sm btn-success" href="#task" onclick="task(${parser.id})">构建任务</a>
-                                <a class="btn btn-sm btn-danger" href="#del" onclick="del(${parser.id})">删除</a>
+                                title="${task.name}">${task.name}</td>
+                            <td style="width: 10%;">${task.statusStr}</td>
+                            <td style="width: 15%;">${task.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td style="width: 15%">
+                                <#if task.status == 0>
+                                    <a class="btn btn-sm btn-success" href="#task" onclick="task(${task.id})">执行</a>
+                                </#if>
+                                <#if task.status != 1>
+                                    <a class="btn btn-sm btn-danger" href="#del" onclick="del(${task.id})">删除</a>
+                                </#if>
+                                <#if task.status == 2>
+                                    <a class="btn btn-sm btn-success" href="/datas?taskId=${task.id}" target="_blank">结果</a>
+                                </#if>
                             </td>
                         </tr>
                         </#list>
                     </tbody>
                 </table>
-                <@pagination pageNo=criteria.pageNo size=criteria.pageSize total=parsers.total url='/parsers' ></@pagination>
+                <@pagination pageNo=criteria.pageNo size=criteria.pageSize total=tasks.total url='/tasks' ></@pagination>
             </div>
         </div>
     </div>
@@ -87,16 +87,11 @@
 <script type="text/javascript">
 
     function task(id) {
-        var message = "create Task success";
-        var data = {};
-
-        data['parserId'] = id;
+        var message = "process Task success";
 
         $.ajax({
-            url: "/api/task",
-            type: "POST",
-            data: JSON.stringify(data),
-            contentType: "application/json",
+            url: "/api/task/" + id,
+            type: "PUT",
             success: function (data) {
                 if (data) {
                     alert(message);
@@ -113,16 +108,16 @@
     }
 
     function del(id) {
-        var isDel = confirm("confirm delete Parser[id = " + id + "]");
+        var isDel = confirm("confirm delete Task[id = " + id + "]");
         if (!isDel) {
             return;
         }
         $.ajax({
-            url: "/api/parser/" + id,
+            url: "/api/task/" + id,
             type: "DELETE",
             success: function (data) {
                 if (data) {
-                    alert("delete Parser(" + id + ") success");
+                    alert("delete Task(" + id + ") success");
                     window.location.reload();
                 }
             },

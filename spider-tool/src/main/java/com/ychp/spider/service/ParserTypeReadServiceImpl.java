@@ -9,9 +9,9 @@ import com.ychp.spider.converter.ParserTypeConverter;
 import com.ychp.spider.model.ParserType;
 import com.ychp.spider.repository.ParserTypeRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class ParserTypeReadServiceImpl implements ParserTypeReadService {
 
-    @Autowired
+    @Resource
     private ParserTypeRepository parserTypeRepository;
 
     @Override

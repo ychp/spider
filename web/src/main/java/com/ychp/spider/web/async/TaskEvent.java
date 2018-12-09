@@ -13,10 +13,9 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpiderUpdateEvent implements Serializable {
+public class TaskEvent implements Serializable {
 
-    private static final long serialVersionUID = 3731240615175378524L;
-    private Long ruleId;
+    private static final long serialVersionUID = 965149064261374155L;
 
-    private Long parserId;
+    private Long taskId;
 }

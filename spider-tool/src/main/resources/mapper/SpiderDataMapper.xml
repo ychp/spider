@@ -4,13 +4,15 @@
     <resultMap id="SpiderDataMap" type="SpiderData" >
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
-        <result column="rule_id" property="ruleId"/>
+        <result column="parser_id" property="parserId"/>
+        <result column="task_id" property="taskId"/>
         <result column="content" property="content"/>
         <result column="url" property="url"/>
         <result column="source" property="source"/>
         <result column="type" property="type"/>
         <result column="level" property="level"/>
         <result column="path" property="path"/>
+        <result column="unique_code" property="uniqueCode"/>
         <result column="status" property="status"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
@@ -19,46 +21,39 @@
     <sql id="tableName">`spider_data`</sql>
 
     <sql id="columns">
-        (`user_id`,`rule_id`,`content`,`url`,`source`,`type`,`level`,`path`,`status`,`created_at`,`updated_at`)
+        (`user_id`,`parser_id`,`task_id`,`content`,`url`,`source`,`type`,`level`,`path`,`unique_code`,`status`,`created_at`,`updated_at`)
     </sql>
 
     <insert id="create" parameterType="SpiderData" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO <include refid="tableName"/><include refid="columns"/>
-        VALUES (#{userId},#{ruleId},#{content},#{url},#{source},#{type},#{level},#{path},#{status},now(),now())
+        VALUES (#{userId},#{parserId},#{taskId},#{content},#{url},#{source},#{type},#{level},#{path},#{uniqueCode},#{status},now(),now())
     </insert>
 
     <insert id="creates" parameterType="list" useGeneratedKeys="true">
         INSERT INTO <include refid="tableName"/><include refid="columns"/> VALUES
         <foreach collection="list" item="spiderData" separator=",">
-          (#{spiderDate.userId},#{spiderData.ruleId},#{spiderData.content},#{spiderData.url},#{spiderData.source},#{spiderData.type},#{spiderData.level},#{spiderData.path},#{spiderData.status},now(),now())
+          (#{spiderDate.userId},#{spiderData.parserId},#{spiderData.taskId},#{spiderData.content},#{spiderData.url},#{spiderData.source},#{spiderData.type},#{spiderData.level},#{spiderData.path},#{spiderData.uniqueCode},#{spiderData.status},now(),now())
         </foreach>
     </insert>
 
-    <update id="update" parameterType="SpiderData" >
-        UPDATE <include refid="tableName"/>
-        SET
-        <if test="ruleId!=null">`rule_id`=#{ruleId},</if>
-        <if test="content!=null">`content`=#{content},</if>
-        <if test="url!=null">`url`=#{url},</if>
-        <if test="source!=null">`source`=#{source},</if>
-        <if test="type!=null">`type`=#{type},</if>
-        <if test="level!=null">`level`=#{level},</if>
-        <if test="path!=null">`path`=#{path},</if>
-        <if test="status!=null">`status`=#{status},</if>
-        `updated_at`= now()
-        WHERE id = #{id}
+    <update id="update" parameterType="SpiderData">
+        update <include refid="tableName"/>
+        <set>
+            `path` = #{path},
+            `status` = #{status},
+            `updated_at` = #{updatedAt}
+        </set>
+        <where>
+            `id` = #{id}
+        </where>
     </update>
 
     <sql id="criteria">
         WHERE 1=1
             <if test="id != null">AND `id`=#{id}</if>
-            <if test="ruleId!=null">AND `rule_id`=#{ruleId}</if>
+            <if test="parserId!=null">AND `parser_id`=#{parserId}</if>
+            <if test="taskId!=null">AND `task_id`=#{taskId}</if>
             <if test="userId!=null">AND `user_id`=#{userId}</if>
-            <if test="ruleIds!=null">AND `rule_id` IN
-                <foreach collection="ruleIds" item="item" open="(" separator="," close=")">
-                  #{item}
-                </foreach>
-            </if>
             <if test="content!=null">AND `content` like #{content}</if>
             <if test="url!=null">AND `url`LIKE CONCAT(#{url}, '%')</if>
             <if test="source!=null">AND `source`=#{source}</if>
@@ -72,8 +67,8 @@
 
     <select id="findByIds" parameterType="list" resultMap="SpiderDataMap">
         SELECT * FROM <include refid="tableName"/> WHERE id in
-        <foreach collection="ids" item="item" open="(" separator="," close=")">
-            #{item}
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </select>
 
@@ -82,7 +77,7 @@
     </delete>
 
     <delete id="deleteBy" >
-        DELETE FROM <include refid="tableName"/> WHERE `rule_id`=#{ruleId} AND type=2
+        DELETE FROM <include refid="tableName"/> WHERE `task_id`=#{taskId}
     </delete>
 
     <select id="count" parameterType="map" resultType="long">
@@ -101,36 +96,5 @@
         SET `status`=#{status},`updated_at`= now()
         WHERE id = #{id}
     </update>
-
-    <select id="countByContent" parameterType="string" resultType="long">
-        SELECT count(*) FROM <include refid="tableName"/>
-        WHERE content = <![CDATA[#{content}]]>
-    </select>
-
-    <select id="findFirstIds" resultType="long">
-        SELECT min(`id`)
-        FROM <include refid="tableName"/>
-        WHERE type = 2
-        GROUP BY `rule_id`
-    </select>
-
-    <select id="countByRule" resultType="map">
-        SELECT `rule_id`,COUNT(`rule_id`) as count
-        FROM <include refid="tableName"/>
-        WHERE type = 2
-        GROUP BY `rule_id`
-    </select>
-
-    <select id="findBy" resultMap="SpiderDataMap">
-        SELECT *
-        FROM <include refid="tableName"/>
-        WHERE `rule_id`=#{ruleId} AND `content` like CONCAT(#{content}, '%') AND `url`LIKE CONCAT(#{url}, '%')
-    </select>
-
-    <select id="findByRuleId" resultMap="SpiderDataMap">
-        SELECT *
-        FROM <include refid="tableName"/>
-        WHERE `rule_id`=#{ruleId}
-    </select>
 
 </mapper>

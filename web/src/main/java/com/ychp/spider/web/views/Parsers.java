@@ -4,12 +4,14 @@ import com.ychp.common.model.paging.Paging;
 import com.ychp.common.util.SessionContextUtils;
 import com.ychp.spider.bean.request.ParserCriteria;
 import com.ychp.spider.bean.request.ParserTypeCriteria;
+import com.ychp.spider.bean.request.TaskCriteria;
 import com.ychp.spider.bean.response.ParserDetailInfo;
 import com.ychp.spider.bean.response.ParserInfo;
+import com.ychp.spider.bean.response.TaskInfo;
 import com.ychp.spider.service.ParserReadService;
 import com.ychp.spider.service.ParserTypeReadService;
+import com.ychp.spider.service.TaskReadService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +28,14 @@ import javax.annotation.Resource;
 @Controller
 public class Parsers {
 
-    @Autowired
+    @Resource
     private ParserReadService parserReadService;
 
     @Resource
     private ParserTypeReadService parserTypeReadService;
+
+    @Resource
+    private TaskReadService taskReadService;
 
     /**
      * 爬虫解析管理
@@ -39,6 +44,7 @@ public class Parsers {
     public String parsers(Model model, ParserCriteria criteria) {
         Paging<ParserInfo> parserNodePaging = parserReadService.paging(criteria);
         model.addAttribute("parsers", parserNodePaging);
+        model.addAttribute("criteria", criteria);
         return "parsers";
     }
 
@@ -70,4 +76,14 @@ public class Parsers {
         return "parser-edit";
     }
 
+    /**
+     * 爬虫任务管理
+     */
+    @GetMapping("tasks")
+    public String tasks(Model model, TaskCriteria criteria) {
+        Paging<TaskInfo> taskInfo = taskReadService.paging(criteria);
+        model.addAttribute("tasks", taskInfo);
+        model.addAttribute("criteria", criteria);
+        return "tasks";
+    }
 }

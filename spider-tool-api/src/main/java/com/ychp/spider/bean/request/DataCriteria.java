@@ -15,7 +15,9 @@ import lombok.ToString;
 public class DataCriteria extends PagingCriteria {
     private static final long serialVersionUID = 7890645802598061688L;
 
-    private Long ruleId;
+    private Long userId;
+
+    private Long taskId;
 
     private Integer status;
 

@@ -21,5 +21,5 @@ public interface SpiderDataWriteService {
 
     Boolean delete(Long id);
 
-    Boolean deleteBy(Long ruleId);
+    Boolean deleteBy(Long taskId);
 }

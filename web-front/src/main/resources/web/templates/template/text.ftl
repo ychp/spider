@@ -15,24 +15,24 @@
         <#list datas.datas as data>
         <tr>
             <td style="width: 5%">${data.id}</td>
-            <td style="width: 20%;" title="${data.url?if_exists}">
+            <td style="width: 20%; max-width: 200px; overflow: hidden;" title="${data.url!}">
                 <#if data.url??>
                     <#if data.url?length gt 20>
-                        <xmp>${data.url[0..20]}...</xmp>
+                        <a style="text-decoration:underline;" href="${data.url}" target="_blank">${data.url[0..20]}...</a>
                     <#else>
-                        <xmp>${data.url}</xmp>
+                        <a style="text-decoration:underline;" href="${data.url}" target="_blank">${data.url}</a>
                     </#if>
                 </#if>
             </td>
-            <td style="width: 20%">
+            <td style="width: 20%;">
                 <#if data.content?length gt 20>
                     <xmp>${data.content[0..20]}...</xmp>
                 <#else>
                     <xmp>${data.content}</xmp>
                 </#if>
             </td>
-            <td style="width: 7%">${data.typeStr?if_exists}</td>
-            <td style="width: 8%">${data.statusStr?if_exists}</td>
+            <td style="width: 7%">${data.typeStr!}</td>
+            <td style="width: 8%">${data.statusStr!}</td>
             <td style="width: 15%;">${data.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
             <td style="width: 10%">
                 <a class="btn btn-sm btn-success" href="#detail" onclick="showDetail(${data.id?c})" data-toggle="modal">Detail</a>

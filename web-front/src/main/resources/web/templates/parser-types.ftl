@@ -56,7 +56,7 @@
                         </#list>
                     </tbody>
                 </table>
-                <@pagination pageNo=parserTypes.pageNo size=parserTypes.pageSize total=parserTypes.total url='/parser-types' ></@pagination>
+                <@pagination pageNo=criteria.pageNo size=criteria.pageSize total=parserTypes.total url='/parser-types' ></@pagination>
             </div>
         </div>
     </div>

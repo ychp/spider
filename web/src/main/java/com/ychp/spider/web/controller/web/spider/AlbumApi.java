@@ -2,7 +2,6 @@ package com.ychp.spider.web.controller.web.spider;
 
 import com.ychp.async.publisher.AsyncPublisher;
 import com.ychp.spider.service.SpiderDataWriteService;
-import com.ychp.spider.web.async.DataCountEvent;
 import com.ychp.spider.web.async.ImageEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ public class AlbumApi {
     @PutMapping(value = "delete/{ruleId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delete(@PathVariable("ruleId") Long ruleId) {
         Boolean deleted = spiderDataWriteService.deleteBy(ruleId);
-        asyncPublisher.post(new DataCountEvent(ruleId));
         return deleted;
     }
 

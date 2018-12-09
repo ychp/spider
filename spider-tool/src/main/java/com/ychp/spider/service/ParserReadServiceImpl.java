@@ -12,9 +12,9 @@ import com.ychp.spider.model.Parser;
 import com.ychp.spider.model.ParserType;
 import com.ychp.spider.repository.ParserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 @Service
 public class ParserReadServiceImpl implements ParserReadService {
 
-    @Autowired
+    @Resource
     private ParserRepository parserRepository;
 
-    @Autowired
+    @Resource
     private ParserTypeCacher parserTypeCacher;
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author yingchengpeng
@@ -20,7 +21,7 @@ public class ParserRegistry {
     @Autowired
     private ApplicationContext applicationContext;
 
-    private Map<String, BaseParser> parserBeans;
+    private Map<String, BaseParser> parserByType;
 
     @PostConstruct
     public void init(){
@@ -28,16 +29,18 @@ public class ParserRegistry {
     }
 
     private void registerActions() {
-        parserBeans = applicationContext.getBeansOfType(BaseParser.class);
+        Map<String, BaseParser> parserBeans = applicationContext.getBeansOfType(BaseParser.class);
+        parserByType = parserBeans.values().stream()
+                .collect(Collectors.toMap(BaseParser::getType, parser -> parser));
     }
 
     /**
      * 获取相应名称的动作
-     * @param name Bean id
+     * @param type Bean id
      * @return Action
      */
-    public BaseParser getParser(String name){
-        return parserBeans.get(name);
+    public BaseParser getParser(String type){
+        return parserByType.get(type);
     }
 
 }

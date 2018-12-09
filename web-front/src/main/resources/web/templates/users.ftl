@@ -72,7 +72,7 @@
                         </#list>
                     </tbody>
                 </table>
-                <@pagination pageNo=users.pageNo size=users.pageSize total=users.total url='/users' ></@pagination>
+                <@pagination pageNo=criteria.pageNo size=criteria.pageSize total=users.total url='/users' ></@pagination>
             </div>
         </div>
     </div>
