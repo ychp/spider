@@ -120,6 +120,7 @@ public abstract class BaseParser {
     }
 
     protected List<SpiderWebData> spiderContext(Document document, SpiderRule rule, String url) {
+        long pre = System.currentTimeMillis();
         List<SpiderWebData> spiderWebDatas = Lists.newArrayList();
         spiderWebDatas.addAll(spiderOneTag(document, rule.getTextTag(), rule.getKeyWord(), DataType.TEXT));
         spiderWebDatas.addAll(spiderOneTag(document, rule.getImageTag(), rule.getKeyWord(), DataType.IMAGE));
@@ -137,6 +138,9 @@ public abstract class BaseParser {
                     }
                 })
                 .collect(Collectors.toList());
+
+        log.info("finish spider task[url={}], datas = {}, cost {} ms",
+                url, spiderWebDatas.size(), System.currentTimeMillis() - pre);
         return spiderWebDatas;
     }
 

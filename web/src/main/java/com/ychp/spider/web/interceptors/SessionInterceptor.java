@@ -75,7 +75,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
             User user = userCacher.findById(Long.valueOf(userId.toString()));
             SkyUser skyUser = SkyUserMaker.make(user);
             SessionContextUtils.put(skyUser);
-            log.info("check user = {}", skyUser);
+//            log.info("check user = {}", skyUser);
             return true;
         }
 
