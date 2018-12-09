@@ -19,7 +19,7 @@ mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
 
 logging:
-  file: /var/log/blog/root.log
+  file: /var/log/spider/root.log
 
 file:
   type: ${FILE_TYPE:}
