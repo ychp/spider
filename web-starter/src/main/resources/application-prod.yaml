@@ -13,6 +13,16 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       maximum-pool-size: 300
+  freemarker:
+    cache: false
+    suffix: .ftl
+    check-template-location: true
+    template-loader-path: classpath:/web/templates
+    enabled: true
+
+custom.freemarker.variables:
+  title: Spider
+  domain: spider.yingchengpeng.com
 
 mybatis:
   type-aliases-package: com.ychp.user.model, com.ychp.spider.model
@@ -56,3 +66,7 @@ session:
       max-wait: 1000
     database: 1
     timeout: 100000
+
+image:
+  imageUrl: http://spider-image.yingchengpeng.com
+  path: /home/spider/images
