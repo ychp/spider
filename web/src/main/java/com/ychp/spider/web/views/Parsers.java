@@ -42,6 +42,7 @@ public class Parsers {
      */
     @GetMapping("parsers")
     public String parsers(Model model, ParserCriteria criteria) {
+        criteria.setUserId(SessionContextUtils.getUserId());
         Paging<ParserInfo> parserNodePaging = parserReadService.paging(criteria);
         model.addAttribute("parsers", parserNodePaging);
         model.addAttribute("criteria", criteria);
@@ -59,7 +60,7 @@ public class Parsers {
     }
 
     /**
-     * 爬虫详情
+     * 爬虫创建/编辑
      */
     @GetMapping("/parser")
     public String parser(Model model, @RequestParam(required = false) Long id) {
@@ -81,6 +82,7 @@ public class Parsers {
      */
     @GetMapping("tasks")
     public String tasks(Model model, TaskCriteria criteria) {
+        criteria.setUserId(SessionContextUtils.getUserId());
         Paging<TaskInfo> taskInfo = taskReadService.paging(criteria);
         model.addAttribute("tasks", taskInfo);
         model.addAttribute("criteria", criteria);
