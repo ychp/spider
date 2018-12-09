@@ -25,7 +25,7 @@
     </sql>
 
     <select id="findById" parameterType="long" resultMap="ParserTypeMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         WHERE id = #{id}
     </select>
@@ -37,7 +37,7 @@
     </select>
 
     <select id="paging" parameterType="map" resultMap="ParserTypeMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         <include refid="criteria"/>
         ORDER BY id DESC
@@ -45,7 +45,7 @@
     </select>
 
     <select id="list" parameterType="map" resultMap="ParserTypeMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         <include refid="criteria"/>
         ORDER BY id DESC
