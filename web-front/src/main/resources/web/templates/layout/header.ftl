@@ -12,23 +12,20 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
-                <#if online??>
-                    <#if online.nickName??>
-                        <#if online.nickName == 'admin'>
-                            <li><a href="/users">User</a></li>
-                        </#if>
-                    <#elseif online.name??>
-                        <#if online.name == 'admin'>
-                            <li><a href="/users">User</a></li>
-                        </#if>
+                <#if isAdmin??>
+                    <#if isAdmin>
+                        <li><a href="/users">用户</a></li>
+                        <li><a href="/parser-types">爬虫类型</a></li>
                     </#if>
-                <#else>
-
                 </#if>
-                <li><a href="/parsers">Parsers</a></li>
+                <li><a href="/parsers">爬虫</a></li>
                 <li><a href="/rules">Rules</a></li>
                 <li><a href="/datas">Datas</a></li>
-                <li><a href="/albums">Album</a></li>
+                <#if isAdmin??>
+                    <#if isAdmin>
+                        <li><a href="/albums">Album</a></li>
+                    </#if>
+                </#if>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <#if online??>

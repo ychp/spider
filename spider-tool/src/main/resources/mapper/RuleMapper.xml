@@ -17,7 +17,7 @@
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
-    <sql id="tableName">`rules`</sql>
+    <sql id="tableName">`spider_rules`</sql>
 
     <sql id="columns">
         (`user_id`,`name`,`code`,`key_words`,`url`,`main_image`,`parser_id`,`status`,`image_count`,`video_count`,`created_at`,`updated_at`)

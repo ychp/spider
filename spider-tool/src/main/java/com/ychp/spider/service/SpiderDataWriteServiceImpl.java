@@ -4,7 +4,7 @@ import com.google.common.base.Throwables;
 import com.ychp.common.exception.ResponseException;
 import com.ychp.spider.enums.RuleStatus;
 import com.ychp.spider.model.SpiderData;
-import com.ychp.spider.dao.SpiderDataRepository;
+import com.ychp.spider.repository.SpiderDataRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

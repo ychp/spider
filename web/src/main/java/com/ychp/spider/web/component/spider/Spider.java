@@ -6,16 +6,16 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.ychp.common.exception.ResponseException;
+import com.ychp.spider.bean.response.ParserDetailInfo;
+import com.ychp.spider.dto.SpiderWebData;
 import com.ychp.spider.enums.DataType;
 import com.ychp.spider.enums.RuleStatus;
-import com.ychp.spider.model.ParserNode;
+import com.ychp.spider.enums.ScanType;
 import com.ychp.spider.model.Rule;
 import com.ychp.spider.model.SpiderData;
-import com.ychp.spider.service.*;
-import com.ychp.spider.dto.SpiderWebData;
-import com.ychp.spider.enums.ScanType;
-import com.ychp.spider.parser.Parser;
+import com.ychp.spider.parser.BaseParser;
 import com.ychp.spider.parser.core.ParserRegistry;
+import com.ychp.spider.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,10 @@ public class Spider {
     private ParserRegistry parserRegistry;
 
     @Autowired
-    private ParserNodeReadService parserNodeReadService;
+    private ParserReadService parserReadService;
+
+    @Autowired
+    private ParserTypeReadService parserTypeReadService;
 
     @Autowired
     private RuleReadService ruleReadService;
@@ -63,19 +66,19 @@ public class Spider {
             if (parserId == null) {
                 parserId = rule.getParserId();
             }
-            ParserNode node = parserNodeReadService.findOneById(parserId);
+            ParserDetailInfo node = parserReadService.findOneById(parserId);
 
             ruleWriteService.updateStatus(rule.getId(), RuleStatus.WAITING.getValue());
 
             String parentUrl = rule.getUrl();
-            Parser parser = parserRegistry.getParser(node.getKey());
+            BaseParser parser = parserRegistry.getParser(node.getParserTypeKey());
 
             Map<String, String> ruleValues = Maps.newHashMap();
             ruleValues.put("keywords", rule.getKeyWords());
-            ruleValues.put("videoTag", node.getVideoTag());
-            ruleValues.put("imageTag", node.getImageTag());
-            ruleValues.put("textTag", node.getTextTag());
-            ruleValues.put("subTag", node.getSubTag());
+//            ruleValues.put("videoTag", node.getVideoTag());
+//            ruleValues.put("imageTag", node.getImageTag());
+//            ruleValues.put("textTag", node.getTextTag());
+//            ruleValues.put("subTag", node.getSubTag());
 
             Boolean isSuccess = spider(parentUrl, maxPangNo, ruleValues, parser, rule);
 
@@ -98,7 +101,7 @@ public class Spider {
 
     private Boolean spider(String parentUrl, Integer pageNo,
                            Map<String, String> ruleValues,
-                           Parser parser, Rule rule) {
+                           BaseParser parser, Rule rule) {
         List<? extends SpiderWebData> datas;
         boolean isSuccess = false;
         String url = parentUrl;

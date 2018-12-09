@@ -1,6 +1,6 @@
 package com.ychp.spider.parser.core;
 
-import com.ychp.spider.parser.Parser;
+import com.ychp.spider.parser.BaseParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +20,7 @@ public class ParserRegistry {
     @Autowired
     private ApplicationContext applicationContext;
 
-    private Map<String, Parser> parserBeans;
+    private Map<String, BaseParser> parserBeans;
 
     @PostConstruct
     public void init(){
@@ -28,7 +28,7 @@ public class ParserRegistry {
     }
 
     private void registerActions() {
-        parserBeans = applicationContext.getBeansOfType(Parser.class);
+        parserBeans = applicationContext.getBeansOfType(BaseParser.class);
     }
 
     /**
@@ -36,7 +36,7 @@ public class ParserRegistry {
      * @param name Bean id
      * @return Action
      */
-    public Parser getParser(String name){
+    public BaseParser getParser(String name){
         return parserBeans.get(name);
     }
 

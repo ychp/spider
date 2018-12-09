@@ -2,7 +2,7 @@
 <#include "taglib/pagination.ftl">
 <#macro overrideHead>
 <meta charset="utf-8">
-<title>${title}-Parsers</title>
+<title>${title}-爬虫</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -40,10 +40,9 @@
     <div class="smart-widget" style="border: 0px;background-color: transparent;box-shadow: none;">
         <div class="smart-widget-header"
              style="margin-top:10px;height: 50px;line-height:30px;padding-top: 7px;padding-bottom: 7px;">
-            Parsers Manage (${parsers.total})
+            爬虫管理 (${parsers.total})
             <span class="smart-widget-option">
-                <a href="#formInModal" class="btn btn-success" data-toggle="modal" style="color: #fff;"
-                   onclick="clearForm();">ADD</a>
+                <a href="/parser" class="btn btn-success" style="color: #fff;" target="_blank">添加</a>
             </span>
         </div>
 
@@ -54,8 +53,7 @@
                     <tr>
                         <th>ID</th>
                         <th>名称</th>
-                        <th>Key</th>
-                        <th>标签</th>
+                        <th>类型</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
@@ -64,18 +62,17 @@
                         <#list parsers.datas as parser>
                         <tr>
                             <td style="width: 5%">${parser.id}</td>
-                            <td style="width: 10%; max-height: 30px; max-width:400px; overflow: hidden; word-break: normal;"
+                            <td style="width: 30%; max-height: 30px; max-width:400px; overflow: hidden; word-break: normal;"
                                 title="${parser.name}">${parser.name}</td>
-                            <td style="width: 10%">${parser.key!}</td>
-                            <td>${parser.tags!}</td>
-                            <td style="width: 20%;">${parser.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td style="width: 30%">${parser.parserType!}</td>
+                            <td style="width: 15%;">${parser.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
                             <td style="width: 15%">
-                                <a class="btn btn-sm btn-success" href="#formInModal" onclick="editShow(${parser.id})"
-                                   data-toggle="modal">Edit</a>
-                                <a class="btn btn-sm btn-success" href="#detail" onclick="showDetail(${parser.id})"
-                                   data-toggle="modal">Detail</a>
+                                <a class="btn btn-sm btn-success" href="/parser?id=${parser.id}"
+                                   target="_self">编辑</a>
+                                <a class="btn btn-sm btn-success" href="/${parser.id}/parser-detail"
+                                   target="_self">详情</a>
                                 <a class="btn btn-sm btn-danger" href="#del" onclick="del(${parser.id})"
-                                   data-toggle="modal">Del</a>
+                                   data-toggle="modal">删除</a>
                             </td>
                         </tr>
                         </#list>
@@ -87,190 +84,7 @@
     </div>
 </div><!-- /main-container -->
 
-
-<!-- Large modal -->
-<div class="modal fade" id="formInModal">
-    <div class="modal-dialog modal-mid">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Parser</h4>
-            </div>
-            <div class="modal-body">
-                <form id="create" role="form">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="hidden" name="id">
-                        <input type="text" name="name" class="form-control" placeholder="name">
-                    </div>
-                    <div class="form-group">
-                        <label>Key</label>
-                        <input type="text" name="key" class="form-control" placeholder="key">
-                    </div>
-                    <div class="form-group">
-                        <label>VideoTag</label>
-                        <input type="text" name="videoTag" class="form-control" placeholder="videoTag">
-                    </div>
-                    <div class="form-group">
-                        <label>ImageTag</label>
-                        <input type="text" name="imageTag" class="form-control" placeholder="imageTag">
-                    </div>
-                    <div class="form-group">
-                        <label>TextTag</label>
-                        <input type="text" name="textTag" class="form-control" placeholder="textTag">
-                    </div>
-                    <div class="form-group">
-                        <label>SubTag</label>
-                        <input type="text" name="subTag" class="form-control" placeholder="subTag">
-                    </div>
-                </form>
-                <div class="form-group text-center">
-                    <a id="submit" class="btn btn-info m-top-md">Submit</a>
-                    <a class="btn btn-default m-top-md" data-dismiss="modal">Cancel</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Large modal -->
-<div class="modal fade" id="detail">
-    <div class="modal-dialog modal-mid">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Parser(<label id="detailId"> </label>)</h4>
-            </div>
-            <div class="modal-body">
-                <form role="form">
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">Name:</label>
-                        <label class="control-label" id="detailName">Name</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">Key:</label>
-                        <label class="control-label" id="detailKey">Key</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">VideoTag:</label>
-                        <label class="control-label" id="detailVideoTag">VideoTag</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">ImageTag:</label>
-                        <label class="control-label" id="detailImageTag">ImageTag</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">TextTag:</label>
-                        <label class="control-label" id="detailTextTag">TextTag</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">SubTag:</label>
-                        <label class="control-label" id="detailSubTag">SubTag</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">CreateDate:</label>
-                        <label class="control-label" id="detailCreate">CreateDate</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-lg-3">UpdateDate:</label>
-                        <label class="control-label" id="detailUpdate">UpdateDate</label>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="message" class="alert alert-success alert-dismissible" role="alert"
-     style="position: absolute;top:25%;left: 20%;width: 60%;z-index: 999;display: none;">
-    <button type="button" class="close" onclick="hideMsg()"><span aria-hidden="true">&times;</span><span
-            class="sr-only">Close</span></button>
-    <i id="message-icon" class="fa fa-check-circle m-right-xs"></i><strong id="message-title">Well done!</strong><label
-        id="message-content">You successfully read this important alert message.</label>
-</div>
-
 <script type="text/javascript">
-    function clearForm() {
-        $("input[name=id]").val("");
-        $("input[name=name]").val("");
-        $("input[name=key]").val("");
-        $("input[name=videoTag]").val("");
-        $("input[name=imageTag]").val("");
-        $("input[name=textTag]").val("");
-        $("input[name=subTag]").val("");
-    }
-
-    function hideDetail() {
-        $("#detail").hide();
-    }
-
-    function editShow(id) {
-        $.ajax({
-            url: "/api/parser/" + id,
-            type: "GET",
-            contentType: "application/json",
-            success: function (data) {
-                $("input[name=id]").val(data.id);
-                $("input[name=name]").val(data.name);
-                $("input[name=key]").val(data.key);
-                $("input[name=videoTag]").val(data.videoTag);
-                $("input[name=imageTag]").val(data.imageTag);
-                $("input[name=textTag]").val(data.textTag);
-                $("input[name=subTag]").val(data.subTag);
-            },
-            error: function (data) {
-                alert(data.responseText);
-            }
-        });
-    }
-
-    function showDetail(id) {
-        $.ajax({
-            url: "/api/parser/" + id,
-            type: "GET",
-            contentType: "application/json",
-            success: function (data) {
-                $("#detailId").html(data.id);
-                $("#detailName").attr("title", data.name);
-                $("#detailName").html(data.name);
-                $("#detailKey").html(data.key);
-                if (data.videoTag === "") {
-                    $("#detailVideoTag").html("无");
-                } else {
-                    $("#detailVideoTag").html(data.videoTag);
-                }
-                if (data.imageTag === "") {
-                    $("#detailImageTag").html("无");
-                } else {
-                    $("#detailImageTag").html(data.imageTag);
-                }
-                if (data.textTag === "") {
-                    $("#detailTextTag").html("无");
-                } else {
-                    $("#detailTextTag").html(data.textTag);
-                }
-                if (data.subTag === "") {
-                    $("#detailSubTag").html("无");
-                } else {
-                    $("#detailSubTag").html(data.subTag);
-                }
-                $("#detailCreate").html(new Date(data.createdAt).Format("yyyy-MM-dd HH:mm:ss"));
-                $("#detailUpdate").html(new Date(data.updatedAt).Format("yyyy-MM-dd HH:mm:ss"));
-                var forms = $("#detail .form-group");
-                if (forms != null) {
-                    for (var i = 0; i < forms.length; i++) {
-                        var obj = forms[i].childNodes[3];
-                        if (forms[i].style.height > parseInt(obj.style.height)) {
-                            forms[i].style.height = obj.style.height;
-                        }
-                    }
-                }
-            },
-            error: function (data) {
-                alert(data.responseText);
-            }
-        });
-    }
 
     function del(id) {
         var isDel = confirm("confirm delete Parser[id = " + id + "]");
@@ -278,12 +92,13 @@
             return;
         }
         $.ajax({
-            url: "/api/parser/delete/" + id,
-            type: "PUT",
+            url: "/api/parser/" + id,
+            type: "DELETE",
             contentType: "application/json",
             success: function (data) {
                 if (data) {
-                    successShow("delete Parser(" + id + ") success");
+                    alert("delete Parser(" + id + ") success");
+                    window.location.reload();
                 }
             },
             error: function (data) {
@@ -291,70 +106,6 @@
             }
         });
     }
-
-    function success() {
-        $("#message").hide();
-        window.location.reload();
-    }
-
-    function successShow(message) {
-        $("#message").addClass("alert-success");
-        $("#message-icon").addClass("fa-check-circle");
-        $("#message-title").html("Well done!");
-        $("#message-content").html(message);
-        $("#message").show();
-        window.setTimeout("success()", 3000);
-    }
-
-    function hideMsg() {
-        $("#message").hide();
-    }
-
-    function failShow(message) {
-        $("#message").addClass("alert-danger");
-        $("#message-icon").addClass("fa-times-circle");
-        $("#message-title").html("Oh snap!");
-        $("#message-content").html(message);
-        $("#message").show();
-        window.setTimeout("hideMsg()", 3000);
-    }
-
-
-    $(function () {
-        hideDetail();
-        $("#submit").click(function () {
-            var id = $("input[name=id]").val();
-            var message = "create Parser success";
-            var url = "/api/parser/create";
-            var data = {};
-            if (id != undefined && id != "") {
-                message = "update Parser[id = " + id + "] success";
-                url = "/api/parser/update";
-                data['id'] = id;
-            }
-            data['name'] = $("input[name=name]").val();
-            data['key'] = $("input[name=key]").val();
-            data['videoTag'] = $("input[name=videoTag]").val();
-            data['imageTag'] = $("input[name=imageTag]").val();
-            data['textTag'] = $("input[name=textTag]").val();
-            data['subTag'] = $("input[name=subTag]").val();
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                success: function (data) {
-                    if (data) {
-                        window.location.reload();
-                    }
-                },
-                error: function (data) {
-                    failShow(data.responseText);
-                }
-            });
-        });
-    });
 </script>
 
 </#macro>

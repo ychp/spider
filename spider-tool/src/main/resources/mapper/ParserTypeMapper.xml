@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ParserType">
+    <resultMap id="ParserTypeMap" type="ParserType">
+        <id column="id" property="id"/>
+        <result column="just_admin" property="justAdmin"/>
+        <result column="name" property="name"/>
+        <result column="key" property="key"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="tableName">`spider_parser_type`</sql>
+
+    <sql id="columns">
+        (`just_admin`,`name`,`key`,`created_at`,`updated_at`)
+    </sql>
+
+    <sql id="criteria">
+        WHERE 1=1
+        <if test="id != null">AND `id`=#{id}</if>
+        <if test="justAdmin != null">AND `just_admin`=#{justAdmin}</if>
+        <if test="name!=null">AND `name`=#{name}</if>
+        <if test="key!=null">AND `key`=#{key}</if>
+    </sql>
+
+    <select id="findById" parameterType="long" resultMap="ParserTypeMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        WHERE id = #{id}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        SELECT count(*) FROM
+        <include refid="tableName"/>
+        <include refid="criteria"/>
+    </select>
+
+    <select id="paging" parameterType="map" resultMap="ParserTypeMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        <include refid="criteria"/>
+        ORDER BY id DESC
+        LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="list" parameterType="map" resultMap="ParserTypeMap">
+        SELECT * FROM
+        <include refid="tableName"/>
+        <include refid="criteria"/>
+        ORDER BY id DESC
+    </select>
+</mapper>

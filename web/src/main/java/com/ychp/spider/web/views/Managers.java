@@ -3,14 +3,17 @@ package com.ychp.spider.web.views;
 import com.ychp.common.model.paging.Paging;
 import com.ychp.spider.bean.request.DataCriteria;
 import com.ychp.spider.bean.request.ParserCriteria;
+import com.ychp.spider.bean.request.ParserTypeCriteria;
 import com.ychp.spider.bean.request.RuleCriteria;
+import com.ychp.spider.bean.response.ParserInfo;
+import com.ychp.spider.bean.response.ParserTypeInfo;
 import com.ychp.spider.dto.AlbumDto;
 import com.ychp.spider.enums.DataStatus;
 import com.ychp.spider.enums.DataType;
-import com.ychp.spider.model.ParserNode;
 import com.ychp.spider.model.Rule;
 import com.ychp.spider.model.SpiderData;
-import com.ychp.spider.service.ParserNodeReadService;
+import com.ychp.spider.service.ParserReadService;
+import com.ychp.spider.service.ParserTypeReadService;
 import com.ychp.spider.service.RuleReadService;
 import com.ychp.spider.service.SpiderDataReadService;
 import com.ychp.user.api.bean.query.UserCriteria;
@@ -39,8 +42,12 @@ public class Managers {
     @Autowired
     private UserReadService userReadService;
 
+
     @Autowired
-    private ParserNodeReadService parserNodeReadService;
+    private ParserTypeReadService parserTypeReadService;
+
+    @Autowired
+    private ParserReadService parserReadService;
 
     @Autowired
     private RuleReadService ruleReadService;
@@ -64,14 +71,14 @@ public class Managers {
     }
 
     /**
-     * 爬虫解析管理
+     * 爬虫类型管理
      */
-    @GetMapping("parsers")
-    public String parsers(Model model, ParserCriteria criteria) {
-        Paging<ParserNode> parserNodePaging = parserNodeReadService.paging(criteria);
+    @GetMapping("parser-types")
+    public String parserTypes(Model model, ParserTypeCriteria criteria) {
+        Paging<ParserTypeInfo> parserNodePaging = parserTypeReadService.paging(criteria);
 
-        model.addAttribute("parsers", parserNodePaging);
-        return "parsers";
+        model.addAttribute("parserTypes", parserNodePaging);
+        return "parser-types";
     }
 
     /**
@@ -82,8 +89,8 @@ public class Managers {
         Paging<Rule> rulePaging = ruleReadService.paging(criteria);
         model.addAttribute("rules", rulePaging);
 
-        List<ParserNode> parserNodes = parserNodeReadService.list(new ParserCriteria());
-        model.addAttribute("parsers", parserNodes);
+        List<ParserInfo> parsers = parserReadService.list(new ParserCriteria());
+        model.addAttribute("parsers", parsers);
 
         model.addAttribute("status", criteria.getStatus());
         return "rules";

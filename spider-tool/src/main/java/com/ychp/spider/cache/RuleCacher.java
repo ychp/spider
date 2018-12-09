@@ -6,7 +6,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Maps;
 import com.ychp.common.model.paging.Paging;
 import com.ychp.spider.model.Rule;
-import com.ychp.spider.dao.RuleRepository;
+import com.ychp.spider.repository.RuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

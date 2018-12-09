@@ -17,26 +17,34 @@ CREATE TABLE IF NOT EXISTS `sky_user` (
   KEY `idx_user_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '用户表';
 
+DROP TABLE IF EXISTS `spider_parser_type`;
 
-DROP TABLE IF EXISTS `parser_node`;
-
-CREATE TABLE IF NOT EXISTS `parser_node` (
+CREATE TABLE IF NOT EXISTS `spider_parser_type` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NOT NULL COMMENT '用户Id',
+  `just_admin` bigint(20) NOT NULL COMMENT '仅admin使用',
   `name` varchar(256) DEFAULT NULL COMMENT '名称',
   `key` varchar(256) DEFAULT NULL COMMENT 'key',
-  `video_tag` varchar(256) DEFAULT NULL COMMENT '视频标签',
-  `image_tag` varchar(256) DEFAULT NULL COMMENT '图片标签',
-  `text_tag` varchar(256) DEFAULT NULL COMMENT '文本标签',
-  `sub_tag` varchar(256) DEFAULT NULL COMMENT 'html标签',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `rules`;
+DROP TABLE IF EXISTS `spider_parser`;
 
-CREATE TABLE IF NOT EXISTS `rules` (
+CREATE TABLE IF NOT EXISTS `spider_parser` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL COMMENT '用户Id',
+  `name` varchar(256) DEFAULT NULL COMMENT '名称',
+  `parser_type_id` bigint(20) NOT NULL COMMENT '爬虫类型Id',
+  `spider_rule` text DEFAULT NULL COMMENT '爬虫规则',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `spider_rules`;
+
+CREATE TABLE IF NOT EXISTS `spider_rules` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户Id',
   `name` varchar(4096) DEFAULT NULL COMMENT '名称',

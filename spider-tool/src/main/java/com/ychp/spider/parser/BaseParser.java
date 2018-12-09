@@ -5,11 +5,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.ychp.common.util.HttpClientUtil;
-import com.ychp.spider.model.Rule;
 import com.ychp.spider.dto.SpiderItem;
 import com.ychp.spider.dto.SpiderRule;
 import com.ychp.spider.dto.SpiderWebData;
 import com.ychp.spider.enums.ScanType;
+import com.ychp.spider.model.Rule;
 import com.ychp.spider.utils.ParserUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @date 2018-12-02
  */
 @Slf4j
-public abstract class Parser<T extends SpiderWebData> {
+public abstract class BaseParser<T extends SpiderWebData> {
 
     @Getter
     @Setter
@@ -44,19 +44,22 @@ public abstract class Parser<T extends SpiderWebData> {
     private static final String VIDEO = "video";
     private static final String TEXT = "text";
 
-    protected static final String IFRAME = "iframe";
+    private static final String I_FRAME = "iframe";
 
-    public Parser(){
+    public BaseParser() {
         initConfigPre();
     }
 
+    /**
+     * 初始化配置
+     */
     protected abstract void initConfigPre();
 
-    private SpiderRule initRule(Map<String, String> ruleValues){
-        if(ruleValues == null){
+    private SpiderRule initRule(Map<String, String> ruleValues) {
+        if (ruleValues == null) {
             ruleValues = Maps.newHashMap();
         }
-        if(ruleValues.isEmpty()) {
+        if (ruleValues.isEmpty()) {
             Properties prop = new Properties();
             InputStream in = Object.class.getResourceAsStream("/rules.properties");
             try {
@@ -76,7 +79,7 @@ public abstract class Parser<T extends SpiderWebData> {
         return ParserUtils.getRule(ruleValues);
     }
 
-    private Map<String, Elements> generateTag(String html, SpiderRule spiderRule){
+    private Map<String, Elements> generateTag(String html, SpiderRule spiderRule) {
         Map<String, Elements> elementsByType = Maps.newHashMap();
         Document document = Jsoup.parse(html);
         fillTags(document, spiderRule.getTextTag(), TEXT, elementsByType);
@@ -87,10 +90,10 @@ public abstract class Parser<T extends SpiderWebData> {
     }
 
     private void fillTags(Document document, List<String> tags,
-                         String key,
-                         Map<String, Elements> elementsByType){
+                          String key,
+                          Map<String, Elements> elementsByType) {
         Elements elements = new Elements();
-        for(String tag : tags) {
+        for (String tag : tags) {
             Elements elementsByTag = document.getElementsByTag(tag);
             elements.addAll(elementsByTag);
             elementsByTag = document.getElementsByClass(tag);
@@ -99,20 +102,20 @@ public abstract class Parser<T extends SpiderWebData> {
         elementsByType.put(key, elements);
     }
 
-    private List<Map<String, Set<SpiderItem>>> getDatas(String html, SpiderRule spiderRule){
+    private List<Map<String, Set<SpiderItem>>> getDatas(String html, SpiderRule spiderRule) {
         Map<String, Elements> tagsByType = generateTag(html, spiderRule);
         List<Map<String, Set<SpiderItem>>> results = Lists.newArrayList();
-        for(String type : tagsByType.keySet()){
+        for (String type : tagsByType.keySet()) {
             results.add(getResult(type, tagsByType.get(type), spiderRule));
         }
         return results;
     }
 
-    private Map<String, Set<SpiderItem>> getResult(String type, Elements elements, SpiderRule spiderRule){
+    private Map<String, Set<SpiderItem>> getResult(String type, Elements elements, SpiderRule spiderRule) {
         Map<String, Set<SpiderItem>> result = Maps.newHashMap();
         elements.forEach(element -> {
             List<SpiderItem> list = getOneResult(element, spiderRule, type);
-            if(result.get(type) == null) {
+            if (result.get(type) == null) {
                 result.put(type, Sets.newHashSet(list));
             } else {
                 Set<SpiderItem> item = result.get(type);
@@ -124,8 +127,8 @@ public abstract class Parser<T extends SpiderWebData> {
     }
 
     private List<SpiderItem> getOneResult(Element element,
-                                             SpiderRule spiderRule,
-                                             String type){
+                                          SpiderRule spiderRule,
+                                          String type) {
         List<SpiderItem> list = Lists.newArrayList();
         switch (type) {
             case TEXT:
@@ -147,33 +150,33 @@ public abstract class Parser<T extends SpiderWebData> {
         return list;
     }
 
-    protected List<SpiderItem> getVideos(Element element, SpiderRule spiderRule){
+    protected List<SpiderItem> getVideos(Element element, SpiderRule spiderRule) {
         SpiderItem spiderItem = new SpiderItem();
         spiderItem.setUrl(element.attr("source"));
         spiderItem.setContent(element.attr("source"));
         return Lists.newArrayList(spiderItem);
     }
 
-    protected List<SpiderItem> getImages(Element element, SpiderRule spiderRule){
+    protected List<SpiderItem> getImages(Element element, SpiderRule spiderRule) {
         SpiderItem spiderItem = new SpiderItem();
         spiderItem.setUrl(element.attr("src"));
         spiderItem.setContent(element.attr("src"));
         return Lists.newArrayList(spiderItem);
     }
 
-    protected List<SpiderItem> getText(Element element, SpiderRule spiderRule){
+    protected List<SpiderItem> getText(Element element, SpiderRule spiderRule) {
         List<SpiderItem> result = Lists.newArrayList();
         String textContent = element.outerHtml();
-        if(element.childNodeSize() > 0) {
+        if (element.childNodeSize() > 0) {
             textContent = element.childNode(0).outerHtml();
         }
         SpiderItem spiderItem = new SpiderItem();
-        if(containKeyWord(spiderRule.getKeyWord(), textContent)){
+        if (containKeyWord(spiderRule.getKeyWord(), textContent)) {
             spiderItem.setContent(textContent);
             if (element.hasAttr("href")) {
                 spiderItem.setUrl(element.attr("href"));
             }
-            if(spiderItem.getUrl().matches("((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?")
+            if (spiderItem.getUrl().matches("((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?")
                     || spiderItem.getUrl().matches("(/[a-zA-Z0-9\\&%_\\./-~-]*)[?]{0,1}")) {
                 result.add(spiderItem);
             }
@@ -181,23 +184,23 @@ public abstract class Parser<T extends SpiderWebData> {
         return result;
     }
 
-    protected boolean containKeyWord(List<String> keyWord, String textContent){
-        if(keyWord.isEmpty()){
+    protected boolean containKeyWord(List<String> keyWord, String textContent) {
+        if (keyWord.isEmpty()) {
             return true;
         }
 
-        for(String key : keyWord){
-            if(textContent.contains(key)){
+        for (String key : keyWord) {
+            if (textContent.contains(key)) {
                 return true;
             }
         }
         return false;
     }
 
-    protected List<SpiderItem> getSubTags(Element element, SpiderRule spiderRule){
+    protected List<SpiderItem> getSubTags(Element element, SpiderRule spiderRule) {
         List<SpiderItem> result = Lists.newArrayList();
         String textContent = element.outerHtml();
-        if(containKeyWord(spiderRule.getKeyWord(), textContent)) {
+        if (containKeyWord(spiderRule.getKeyWord(), textContent)) {
             SpiderItem spiderItem = new SpiderItem();
             spiderItem.setUrl(element.attr("src"));
             spiderItem.setContent(textContent);
@@ -206,9 +209,9 @@ public abstract class Parser<T extends SpiderWebData> {
         return result;
     }
 
-    private List<T> makeResult(List<Map<String, Set<SpiderItem>>> datas, SpiderRule spiderRule){
+    private List<T> makeResult(List<Map<String, Set<SpiderItem>>> datas, SpiderRule spiderRule) {
         List<T> result = Lists.newArrayList();
-        for(Map<String, Set<SpiderItem>> item : datas) {
+        for (Map<String, Set<SpiderItem>> item : datas) {
             result.addAll(makeResult(item.get(VIDEO), spiderRule, ScanType.VIDEO.getValue()));
             result.addAll(makeResult(item.get(IMAGE), spiderRule, ScanType.IMAGE.getValue()));
             result.addAll(makeResult(item.get(TEXT), spiderRule, ScanType.TEXT.getValue()));
@@ -220,16 +223,16 @@ public abstract class Parser<T extends SpiderWebData> {
     }
 
     private void setDataRef(List<T> result, String dataRef) {
-        for(T t : result){
+        for (T t : result) {
             t.setDataRef(dataRef);
         }
     }
 
-    private List<T> makeResult(Set<SpiderItem> datas, SpiderRule spiderRule, String type){
+    private List<T> makeResult(Set<SpiderItem> datas, SpiderRule spiderRule, String type) {
         List<T> result = Lists.newArrayList();
-        if(datas != null) {
+        if (datas != null) {
             T data;
-            for(SpiderItem item : datas) {
+            for (SpiderItem item : datas) {
                 data = (T) new SpiderWebData();
                 data.setKeyword(spiderRule.getKeyWords());
                 data.setType(type);
@@ -244,7 +247,7 @@ public abstract class Parser<T extends SpiderWebData> {
     }
 
 
-    List<T> parseContext(Map<String, String> ruleValues){
+    List<T> parseContext(Map<String, String> ruleValues) {
         SpiderRule spiderRule = initRule(ruleValues);
         String url = spiderRule.getUrlRegex();
         String html;
@@ -259,29 +262,29 @@ public abstract class Parser<T extends SpiderWebData> {
         return makeResult(datas, spiderRule);
     }
 
-    public List<T> parseContext(){
+    public List<T> parseContext() {
         return parseContext(null);
     }
 
-    private String removeUselessContent(String html){
-        if(!html.startsWith("<html") || !html.startsWith("<HTML")){
-            if(html.contains("<html")) {
+    private String removeUselessContent(String html) {
+        if (!html.startsWith("<html") || !html.startsWith("<HTML")) {
+            if (html.contains("<html")) {
                 html = html.substring(html.indexOf("<html"));
             }
-            if(html.contains("<HTML")) {
+            if (html.contains("<HTML")) {
                 html = html.substring(html.indexOf("<HTML"));
             }
         }
         return html;
     }
 
-    public List<T>  spider(Map<String, String> ruleValues, Rule rule) {
+    public List<T> spider(Map<String, String> ruleValues, Rule rule) {
         initLevel();
         Stopwatch stopwatch = Stopwatch.createStarted();
         List<T> datas = parseContext(ruleValues);
 
         String url = ruleValues.get("url");
-        if(datas.isEmpty()){
+        if (datas.isEmpty()) {
             log.info("finish spider by url[{}], sourceDatas[size={}]", url, datas.size());
             return Lists.newArrayList();
         }
@@ -297,7 +300,7 @@ public abstract class Parser<T extends SpiderWebData> {
         log.info("url = {} parse, cost {} ms", url, stopwatch.elapsed(TimeUnit.MILLISECONDS));
         List<Map<String, String>> subDatas = Lists.newArrayList();
         datas.stream().filter(item -> Objects.equals(item.getType(), ScanType.TAG.getValue())
-                && item.getContent().contains(IFRAME)).collect(Collectors.toList())
+                && item.getContent().contains(I_FRAME)).collect(Collectors.toList())
                 .forEach(item -> {
                     if (!StringUtils.isEmpty(item.getUrl())) {
                         Map<String, String> subData = Maps.newHashMap(ruleValues);
@@ -316,11 +319,11 @@ public abstract class Parser<T extends SpiderWebData> {
         log.info("url = {} parse sub, cost {} ms", url, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
         log.info("finish spider by url[{}], spider datas[size={}], sourceDatas[size={}]", url, spiderDatas.size(), datas.size());
-        if(spiderDatas.size() == 1){
+        if (spiderDatas.size() == 1) {
             log.info("finish spider by url[{}], sourceDatas[size={}]", url, datas);
         }
 
-        if(spiderDatas.size() == 0){
+        if (spiderDatas.size() == 0) {
             log.info("finish spider by url[{}], sourceDatas[size={}]", url, datas.size());
         }
 
@@ -348,7 +351,7 @@ public abstract class Parser<T extends SpiderWebData> {
     protected void putDatas(List<T> spiderDatas, List<T> datas) {
         for (T item : datas) {
             if (Objects.equals(item.getType(), ScanType.TAG.getValue())
-                    && item.getContent().contains(IFRAME)) {
+                    && item.getContent().contains(I_FRAME)) {
                 continue;
             }
             spiderDatas.add(item);

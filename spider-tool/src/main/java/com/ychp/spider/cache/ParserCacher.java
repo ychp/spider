@@ -5,8 +5,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Maps;
 import com.ychp.common.model.paging.Paging;
-import com.ychp.spider.model.ParserNode;
-import com.ychp.spider.dao.ParserNodeRepository;
+import com.ychp.spider.model.Parser;
+import com.ychp.spider.repository.ParserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,24 +21,24 @@ import java.util.Map;
 public class ParserCacher {
 
     @Autowired
-    private ParserNodeRepository parserNodeRepository;
+    private ParserRepository parserRepository;
 
-    private LoadingCache<String,List<ParserNode>> parserCache;
+    private LoadingCache<String,List<Parser>> parserCache;
 
     public ParserCacher(){
-        parserCache = CacheBuilder.newBuilder().build(new CacheLoader<String, List<ParserNode>>() {
+        parserCache = CacheBuilder.newBuilder().build(new CacheLoader<String, List<Parser>>() {
             @Override
-            public List<ParserNode> load(String key) {
+            public List<Parser> load(String key) {
                 Map<String, Object> params = Maps.newHashMap();
                 params.put("offset", 0);
                 params.put("limit", Integer.MAX_VALUE);
-                Paging<ParserNode> parserNodes = parserNodeRepository.paging(params);
+                Paging<Parser> parserNodes = parserRepository.paging(params);
                 return parserNodes.getDatas();
             }
         });
     }
 
-    public List<ParserNode> listAll(){
+    public List<Parser> listAll(){
         return parserCache.getUnchecked("all");
     }
 

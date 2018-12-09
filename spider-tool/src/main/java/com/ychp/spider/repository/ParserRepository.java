@@ -1,8 +1,8 @@
-package com.ychp.spider.dao;
+package com.ychp.spider.repository;
 
 
 import com.ychp.mybatis.repository.BaseRepository;
-import com.ychp.spider.model.ParserNode;
+import com.ychp.spider.model.Parser;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @date 2018-12-02
  */
 @Repository
-public class ParserNodeRepository extends BaseRepository<ParserNode, Long> {
+public class ParserRepository extends BaseRepository<Parser, Long> {
 
 }

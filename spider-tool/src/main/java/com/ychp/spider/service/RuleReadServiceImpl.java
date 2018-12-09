@@ -6,7 +6,7 @@ import com.ychp.common.model.paging.Paging;
 import com.ychp.spider.bean.request.RuleCriteria;
 import com.ychp.spider.model.Rule;
 import com.ychp.spider.cache.RuleCacher;
-import com.ychp.spider.dao.RuleRepository;
+import com.ychp.spider.repository.RuleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

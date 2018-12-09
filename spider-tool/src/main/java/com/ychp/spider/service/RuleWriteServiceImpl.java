@@ -5,12 +5,12 @@ import com.google.common.collect.Maps;
 import com.ychp.common.exception.ResponseException;
 import com.ychp.spider.enums.DataType;
 import com.ychp.spider.enums.RuleStatus;
-import com.ychp.spider.model.ParserNode;
+import com.ychp.spider.model.Parser;
 import com.ychp.spider.model.Rule;
 import com.ychp.spider.cache.ParserCacher;
 import com.ychp.spider.cache.RuleCacher;
-import com.ychp.spider.dao.RuleRepository;
-import com.ychp.spider.dao.SpiderDataRepository;
+import com.ychp.spider.repository.RuleRepository;
+import com.ychp.spider.repository.SpiderDataRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +50,7 @@ public class RuleWriteServiceImpl implements RuleWriteService {
 
             rule.setStatus(RuleStatus.INIT.getValue());
 
-            List<ParserNode> parserNodes = parserCacher.listAll();
-
-            parserNodes.forEach(parserNode -> {
-                if(rule.getUrl().toLowerCase().contains(parserNode.getKey().toLowerCase())) {
-                    rule.setParserId(parserNode.getId());
-                }
-            });
+            List<Parser> parsers = parserCacher.listAll();
 
             return ruleRepository.create(rule);
         } catch (IllegalArgumentException e) {

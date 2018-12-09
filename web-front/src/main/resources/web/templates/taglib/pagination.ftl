@@ -1,9 +1,9 @@
 <#macro pagination pageNo=1 size=20 total=100 url='' params=''>
-<#if total gt size>
-<#assign realPageNo = total/size>
-<#if total%size gt 0>
-    <#assign realPageNo = (total-total%size)/size + 1>
-</#if>
+    <#if total gt size>
+        <#assign realPageNo = total/size>
+        <#if total%size gt 0>
+            <#assign realPageNo = (total-total%size)/size + 1>
+        </#if>
     <div class="text-right">
         <ul class="pagination">
             <#if pageNo gt 1>
@@ -54,5 +54,5 @@
             </#if>
         </ul>
     </div>
-</#if>
+    </#if>
 </#macro>

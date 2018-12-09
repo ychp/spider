@@ -12,7 +12,7 @@ import java.util.Map;
  * @date 2018-12-02
  */
 @Component(value = "default")
-public class DefaultParser extends Parser<SpiderWebData> {
+public class DefaultParser extends BaseParser<SpiderWebData> {
 
 
     private void printDatas(List<SpiderWebData> datas){

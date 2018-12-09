@@ -1,4 +1,4 @@
-package com.ychp.spider.dao;
+package com.ychp.spider.repository;
 
 import com.google.common.collect.ImmutableMap;
 import com.ychp.mybatis.repository.BaseRepository;
