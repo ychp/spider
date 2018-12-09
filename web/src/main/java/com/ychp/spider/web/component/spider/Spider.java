@@ -62,13 +62,14 @@ public class Spider {
 
     private void spider(TaskDetailInfo taskInfo, BaseParser parser) {
         long pre = System.currentTimeMillis();
+
         List<SpiderWebData> webDatas = parser.spider(taskInfo.getUrl(), taskInfo.getSpiderRule());
         List<SpiderData> datas = convert(webDatas, taskInfo);
         if (!spiderDataWriteService.creates(datas)) {
             throw new ResponseException("data.save.fail");
         }
         log.info("finish spider task[id={}, node={}], datas = {}, cost {} ms",
-                taskInfo.getId(), taskInfo.getParserId(), datas, System.currentTimeMillis() - pre);
+                taskInfo.getId(), taskInfo.getParserId(), datas.size(), System.currentTimeMillis() - pre);
     }
 
     private List<SpiderData> convert(List<SpiderWebData> webDatas, TaskDetailInfo taskDetailInfo) {

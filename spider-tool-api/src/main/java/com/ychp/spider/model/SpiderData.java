@@ -20,7 +20,7 @@ import java.util.TreeMap;
  * @date 2018-12-02
  */
 @ToString
-@EqualsAndHashCode(of = {"url", "content", "parserId", "taskId"})
+@EqualsAndHashCode(of = {"uniqueCode"})
 public class SpiderData implements Serializable {
 
     private static final long serialVersionUID = -997469089147821243L;
@@ -86,7 +86,6 @@ public class SpiderData implements Serializable {
         params.put("taskId", taskId.toString());
         params.put("content", content);
         params.put("url", url);
-        params.put("source", source);
         params.put("type", type.toString());
 
         String source = Joiner.on("&").withKeyValueSeparator("=").join(new TreeMap<>(params));

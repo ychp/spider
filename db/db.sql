@@ -68,11 +68,11 @@ CREATE TABLE IF NOT EXISTS `spider_data` (
   `status` tinyint(4) DEFAULT NULL COMMENT '状态:0.已抓取, 1.等待下载数据, 2.下载数据完毕',
   `level` int(10) DEFAULT NULL,
   `content` text COMMENT '内容',
-  `url` text COMMENT '链接',
-  `source` text COMMENT '源链接',
-  `path` varchar(256) DEFAULT NULL COMMENT '文件路径',
-  `unique_code` varchar(64) DEFAULT NULL COMMENT '唯一约束',
+  `url` text CHARACTER SET utf8 COMMENT '链接',
+  `source` text CHARACTER SET utf8 COMMENT '源链接',
+  `path` varchar(256) CHARACTER SET utf8 DEFAULT NULL COMMENT '文件路径',
+  `unique_code` varchar(64) CHARACTER SET utf8 DEFAULT NULL COMMENT '唯一约束',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
 PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

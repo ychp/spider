@@ -27,4 +27,12 @@ public class SpiderRule implements Serializable {
 
     private List<String> subTag = Lists.newArrayList();
 
+    private String pagingKey;
+
+    private String offsetKey;
+
+    private Integer limit;
+
+    private String firstPageKey;
+
 }
