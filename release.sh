@@ -10,7 +10,7 @@ echo 'package'
 mvn clean package -Dmaven.test.skip
 
 echo 'make image'
-cp ${local_path}/web/target/spider.jar ${local_path}/docker/prod/
+cp ${local_path}/web-starter/target/spider.jar ${local_path}/docker/prod/
 cd ${local_path}/docker/prod
 docker build . -t spider:1.0
 
