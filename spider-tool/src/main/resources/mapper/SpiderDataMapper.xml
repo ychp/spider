@@ -21,16 +21,17 @@
     <sql id="tableName">`spider_data`</sql>
 
     <sql id="columns">
-        (`user_id`,`parser_id`,`task_id`,`content`,`url`,`source`,`type`,`level`,`path`,`unique_code`,`status`,`created_at`,`updated_at`)
+        `user_id`,`parser_id`,`task_id`,`content`,`url`,`source`,`type`,`level`,`path`,`unique_code`,`status`,`created_at`,`updated_at`
     </sql>
 
     <insert id="create" parameterType="SpiderData" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO <include refid="tableName"/><include refid="columns"/>
+        INSERT INTO <include refid="tableName"/>
+        (<include refid="columns"/>)
         VALUES (#{userId},#{parserId},#{taskId},#{content},#{url},#{source},#{type},#{level},#{path},#{uniqueCode},#{status},now(),now())
     </insert>
 
     <insert id="creates" parameterType="list" useGeneratedKeys="true">
-        INSERT INTO <include refid="tableName"/><include refid="columns"/> VALUES
+        INSERT INTO <include refid="tableName"/>(<include refid="columns"/>) VALUES
         <foreach collection="list" item="spiderData" separator=",">
           (#{spiderDate.userId},#{spiderData.parserId},#{spiderData.taskId},#{spiderData.content},#{spiderData.url},#{spiderData.source},#{spiderData.type},#{spiderData.level},#{spiderData.path},#{spiderData.uniqueCode},#{spiderData.status},now(),now())
         </foreach>
@@ -62,11 +63,11 @@
     </sql>
 
     <select id="findById" parameterType="long" resultMap="SpiderDataMap">
-        SELECT * FROM <include refid="tableName"/> WHERE id = #{id}
+        SELECT `id`, <include refid="columns"/> FROM <include refid="tableName"/> WHERE id = #{id}
     </select>
 
     <select id="findByIds" parameterType="list" resultMap="SpiderDataMap">
-        SELECT * FROM <include refid="tableName"/> WHERE id in
+        SELECT `id`, <include refid="columns"/> FROM <include refid="tableName"/> WHERE id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -86,7 +87,7 @@
     </select>
 
     <select id="paging" parameterType="map" resultMap="SpiderDataMap">
-        SELECT * FROM <include refid="tableName"/>
+        SELECT `id`, <include refid="columns"/> FROM <include refid="tableName"/>
         <include refid="criteria"/>
         LIMIT #{offset},#{limit}
     </select>

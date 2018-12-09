@@ -13,7 +13,7 @@
     <sql id="tableName">`spider_parser_type`</sql>
 
     <sql id="columns">
-        (`just_admin`,`name`,`key`,`created_at`,`updated_at`)
+        `just_admin`,`name`,`key`,`created_at`,`updated_at`
     </sql>
 
     <sql id="criteria">

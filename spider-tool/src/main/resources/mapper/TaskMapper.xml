@@ -15,19 +15,19 @@
     <sql id="tableName">`spider_task`</sql>
 
     <sql id="columns">
-        (`user_id`,`parser_id`,`url`,`spider_rule`,`status`,`created_at`,`updated_at`)
+        `user_id`,`parser_id`,`url`,`spider_rule`,`status`,`created_at`,`updated_at`
     </sql>
 
     <insert id="create" parameterType="Task" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         <include refid="tableName"/>
-        <include refid="columns"/>
+        (<include refid="columns"/>)
         VALUES (#{userId},#{parserId},#{url},#{spiderRule},#{status},now(),now())
     </insert>
 
     <update id="update" parameterType="Task">
         UPDATE
-        <include refid="tableName"/>
+        (<include refid="tableName"/>)
         SET
         <if test="status!=null">`status`=#{status},</if>
         `updated_at`= now()
@@ -43,7 +43,7 @@
     </sql>
 
     <select id="findById" parameterType="long" resultMap="TaskMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         WHERE id = #{id}
     </select>
@@ -61,7 +61,7 @@
     </select>
 
     <select id="paging" parameterType="map" resultMap="TaskMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         <include refid="criteria"/>
         ORDER BY id DESC

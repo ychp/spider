@@ -15,13 +15,13 @@
     <sql id="tableName">`spider_parser`</sql>
 
     <sql id="columns">
-        (`user_id`,`name`,`url`,`parser_type_id`,`spider_rule`,`created_at`,`updated_at`)
+        `user_id`,`name`,`url`,`parser_type_id`,`spider_rule`,`created_at`,`updated_at`
     </sql>
 
     <insert id="create" parameterType="Parser" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         <include refid="tableName"/>
-        <include refid="columns"/>
+        (<include refid="columns"/>)
         VALUES (#{userId},#{name},#{url},#{parserTypeId},#{spiderRule},now(),now())
     </insert>
 
@@ -45,13 +45,13 @@
     </sql>
 
     <select id="findById" parameterType="long" resultMap="ParserMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         WHERE id = #{id}
     </select>
 
     <select id="findByIds" parameterType="list" resultMap="ParserMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         WHERE id in
         <foreach collection="list" item="id" open="(" separator="," close=")">
@@ -72,7 +72,7 @@
     </select>
 
     <select id="paging" parameterType="map" resultMap="ParserMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         <include refid="criteria"/>
         ORDER BY id DESC
@@ -80,7 +80,7 @@
     </select>
 
     <select id="list" parameterType="map" resultMap="ParserMap">
-        SELECT * FROM
+        SELECT `id`, <include refid="columns"/> FROM
         <include refid="tableName"/>
         <include refid="criteria"/>
         ORDER BY id DESC
