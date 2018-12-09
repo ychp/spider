@@ -59,7 +59,7 @@
                                         <select name="parserType" disabled>
                                             <option value="">请选择</option>
                                             <#list types as type>
-                                                <#if parser.id == type.id>
+                                                <#if parser.parserTypeId == type.id>
                                                     <option value="${type.id}" selected>${type.name}</option>
                                                 <#else>
                                                     <option value="${type.id}">${type.name}</option>
