@@ -77,7 +77,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">规则</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" name="spiderRule">${parser.spiderRule}</textarea>
+                                        <textarea class="form-control" rows="5" name="spiderRule">${parser.spiderRule}</textarea>
                                     </div>
                                 </div>
                             <#else>
@@ -107,7 +107,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">规则</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" name="spiderRule"></textarea>
+                                        <textarea class="form-control" rows="5" name="spiderRule"></textarea>
                                     </div>
                                 </div>
                             </#if>

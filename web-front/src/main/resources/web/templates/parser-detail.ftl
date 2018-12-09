@@ -52,7 +52,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">规则</label>
                                     <div class="col-sm-9">
-                                        <textarea disabled="disabled" class="form-control"><xmp>${parser.spiderRule}</xmp></textarea>
+                                        <textarea disabled="disabled" rows="5" class="form-control">${parser.spiderRule}</textarea>
                                     </div>
                                 </div>
 
