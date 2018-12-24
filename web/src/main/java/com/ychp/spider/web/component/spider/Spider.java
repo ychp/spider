@@ -3,7 +3,7 @@ package com.ychp.spider.web.component.spider;
 import com.ychp.common.exception.ResponseException;
 import com.ychp.spider.bean.response.ParserDetailInfo;
 import com.ychp.spider.bean.response.TaskDetailInfo;
-import com.ychp.spider.dto.SpiderWebData;
+import com.ychp.spider.parser.data.SpiderWebData;
 import com.ychp.spider.enums.DataStatus;
 import com.ychp.spider.enums.TaskStatus;
 import com.ychp.spider.model.SpiderData;

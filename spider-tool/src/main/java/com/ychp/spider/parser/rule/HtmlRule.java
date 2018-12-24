@@ -1,9 +1,9 @@
-package com.ychp.spider.dto;
+package com.ychp.spider.parser.rule;
 
 import com.google.common.collect.Lists;
+import com.ychp.spider.parser.enums.ParserTypeEnums;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +11,7 @@ import java.util.List;
  * @date 2018-12-02
  */
 @Data
-public class SpiderRule implements Serializable {
+public class HtmlRule extends BaseRule {
 
     private static final long serialVersionUID = -5943263253260163974L;
 
@@ -35,4 +35,8 @@ public class SpiderRule implements Serializable {
 
     private String firstPageKey;
 
+    @Override
+    protected String getType() {
+        return ParserTypeEnums.HTML.getValue();
+    }
 }

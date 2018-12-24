@@ -1,4 +1,4 @@
-package com.ychp.spider.dto;
+package com.ychp.spider.parser.data;
 
 import lombok.Data;
 import lombok.Getter;

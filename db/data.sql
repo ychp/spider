@@ -5,6 +5,6 @@ VALUES
 
 INSERT INTO `spider_parser_type` (`id`, `just_admin`, `name`, `key`, `created_at`, `updated_at`)
 VALUES
-(1, false, '默认爬虫', 'default', now(), now())，
-(2, false, '外包爬虫', 'project', now(), now());
+(1, 0, '网页爬虫', 'HTML', now(), now()),
+(2, 0, 'Json爬虫', 'JSON', now(), now());
 
