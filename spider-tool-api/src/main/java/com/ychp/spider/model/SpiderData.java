@@ -2,7 +2,7 @@ package com.ychp.spider.model;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
-import com.ychp.common.util.MD5Util;
+import com.ychp.common.util.Md5Util;
 import com.ychp.spider.enums.DataStatus;
 import com.ychp.spider.enums.DataType;
 import lombok.EqualsAndHashCode;
@@ -89,7 +89,7 @@ public class SpiderData implements Serializable {
         params.put("type", type.toString());
 
         String source = Joiner.on("&").withKeyValueSeparator("=").join(new TreeMap<>(params));
-        return MD5Util.md5Encode(source);
+        return Md5Util.md5Encode(source);
 
     }
 
