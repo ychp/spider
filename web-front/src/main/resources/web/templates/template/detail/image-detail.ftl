@@ -47,7 +47,7 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $("#detailId").html(data.ruleId + "-" + data.id);
+                $("#detailId").html(data.id);
                 if(data.url !== "" && data.url !== undefined){
                     $("#detailImage").attr("src",data.url);
                 }else{

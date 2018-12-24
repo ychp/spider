@@ -51,7 +51,7 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $("#detailId").html(data.ruleId + "-" + data.id);
+                $("#detailId").html(data.id);
                 $("#video").attr("poster", data.url);
                 $("#videoSource").attr("src", data.content);
                 $("#detailPath").html(data.path);

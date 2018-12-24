@@ -11,10 +11,7 @@
                 <form role="form">
                     <div class="form-group">
                         <label class="control-label col-lg-3">URL:</label>
-                        <textarea id="detailURL"
-                                  style="width: 70%; max-width: 400px; word-break: break-all; resize: none;"
-                                  disabled>
-                        </textarea>
+                        <a id ="detailURL"></a>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3">Content:</label>
@@ -52,11 +49,11 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $("#detailId").html(data.ruleId + "-" + data.id);
+                $("#detailId").html(data.id);
                 if(data.url === "" || data.url === undefined){
                     $("#detailURL").html("无");
                 }else {
-                    $("#detailURL").attr("title",data.url);
+                    $("#detailURL").attr("href",data.url);
                     $("#detailURL").html(data.url);
                 }
                 $("#detailContent").html(data.content);

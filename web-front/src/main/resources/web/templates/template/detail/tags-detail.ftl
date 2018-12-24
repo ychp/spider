@@ -43,7 +43,7 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $("#detailId").html(data.ruleId + "-" + data.id);
+                $("#detailId").html(data.id);
                 $("#detailContent").html(data.content);
                 $("#detailType").html(data.typeStr);
                 $("#detailStatus").html(data.statusStr);
