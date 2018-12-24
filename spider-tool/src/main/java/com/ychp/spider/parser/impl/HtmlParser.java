@@ -3,6 +3,7 @@ package com.ychp.spider.parser.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
+import com.ychp.common.constants.SymbolConstants;
 import com.ychp.common.util.HtmlUtils;
 import com.ychp.spider.bean.response.TaskDetailInfo;
 import com.ychp.spider.enums.DataType;
@@ -68,12 +69,8 @@ public class HtmlParser extends BaseParser {
                 if (document == null) {
                     return;
                 }
-                datas.addAll(spiderContext(document, htmlRule, finalUrl));
+                spider(datas, document, htmlRule, finalUrl, taskInfo);
 
-                if (datas.size() >= 200) {
-                    save(datas, taskInfo);
-                    datas.clear();
-                }
                 if (document.html().contains(firstKey)) {
                     break;
                 }
@@ -93,12 +90,7 @@ public class HtmlParser extends BaseParser {
                     break;
                 }
 
-                datas.addAll(spiderContext(document, htmlRule, finalUrl));
-
-                if (datas.size() >= 200) {
-                    save(datas, taskInfo);
-                    datas.clear();
-                }
+                spider(datas, document, htmlRule, finalUrl, taskInfo);
                 offset += limit;
             }
         }
@@ -112,6 +104,18 @@ public class HtmlParser extends BaseParser {
         }
         List<SpiderWebData> datas = spiderContext(document, rule, taskInfo.getUrl());
         save(datas, taskInfo);
+    }
+
+    private void spider(List<SpiderWebData> datas, Document document, HtmlRule htmlRule,
+                        String finalUrl, TaskDetailInfo taskInfo) {
+        int size = datas.size();
+
+        datas.addAll(spiderContext(document, htmlRule, finalUrl));
+
+        if (datas.size() == size || datas.size() >= 200) {
+            save(datas, taskInfo);
+            datas.clear();
+        }
     }
 
     private Document getWebContextDocument(String url) {
@@ -143,13 +147,13 @@ public class HtmlParser extends BaseParser {
         spiderWebDatas.addAll(spiderOneTag(document, rule.getVideoTag(), rule.getKeyWord(), DataType.VIDEO));
         spiderWebDatas.addAll(spiderOneTag(document, rule.getSubTag(), rule.getKeyWord(), DataType.TAG));
         String domain = url.split("\\?")[0];
-        String[] domainArr = domain.split("/");
+        String[] domainArr = domain.split(SymbolConstants.SLASH);
         spiderWebDatas = spiderWebDatas.stream()
                 .filter(Objects::nonNull)
-                .filter(spiderWebData -> !spiderWebData.getUrl().startsWith("/"))
+                .filter(spiderWebData -> !spiderWebData.getUrl().startsWith(SymbolConstants.SLASH))
                 .peek(spiderWebData -> {
                     spiderWebData.setSource(url);
-                    if (spiderWebData.getUrl().startsWith("/")) {
+                    if (spiderWebData.getUrl().startsWith(SymbolConstants.SLASH)) {
                         spiderWebData.setUrl(domainArr[0] + "//" + domainArr[2] + spiderWebData.getUrl());
                     }
                 })

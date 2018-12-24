@@ -56,12 +56,13 @@ public class JsonParser extends BaseParser {
         int pageNo = 1;
         while (true) {
             String finalUrl = url.replace(jsonRule.getPagingKey(), pageNo + "");
+            int size = datas.size();
             datas.addAll(getDatas(finalUrl, jsonRule));
             if (datas.isEmpty()) {
                 break;
             }
 
-            if (datas.size() >= 200) {
+            if (datas.size() == size || datas.size() >= 200) {
                 save(datas, taskInfo);
                 datas.clear();
             }
