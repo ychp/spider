@@ -68,7 +68,7 @@ public class JsonParser extends BaseParser {
                 datas.clear();
 
                 // 本次无数据获取，认定为结束
-                if(afterSize == size) {
+                if (afterSize == size) {
                     break;
                 }
             }
@@ -84,6 +84,9 @@ public class JsonParser extends BaseParser {
         String json = getWebContext(url,
                 ImmutableMap.of("Accept", "application/json"));
         JSONObject jsonObject = JSONObject.fromObject(json);
+        if (!jsonObject.containsKey(rule.getDetailKey())) {
+            return Lists.newArrayListWithCapacity(0);
+        }
         JSONArray jsonArray = jsonObject.getJSONArray(rule.getDataKey());
 
         int size = jsonArray.size();
