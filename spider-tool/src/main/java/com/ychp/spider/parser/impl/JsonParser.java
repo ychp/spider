@@ -66,6 +66,11 @@ public class JsonParser extends BaseParser {
                 save(datas, taskInfo);
                 datas.clear();
             }
+
+            // 本次无数据获取，认定为结束
+            if (datas.size() == size) {
+                break;
+            }
             pageNo++;
         }
 
