@@ -3,8 +3,8 @@ package com.ychp.spider.parser.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.ychp.common.util.HtmlUtils;
+import com.ychp.spider.bean.response.TaskDetailInfo;
 import com.ychp.spider.enums.DataType;
 import com.ychp.spider.parser.BaseParser;
 import com.ychp.spider.parser.data.SpiderWebData;
@@ -23,7 +23,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,20 +42,23 @@ public class HtmlParser extends BaseParser {
     }
 
     @Override
-    public List<SpiderWebData> spider(String url, BaseRule rule) {
+    public void spider(TaskDetailInfo taskInfo, BaseRule rule) {
         HtmlRule htmlRule = (HtmlRule) rule;
         String pagingKey = htmlRule.getPagingKey();
         String offsetKey = htmlRule.getOffsetKey();
         int limit = htmlRule.getLimit() == null ? 20 : htmlRule.getLimit();
         String firstKey = htmlRule.getFirstPageKey();
+        String url = taskInfo.getUrl();
         boolean isPaging = !StringUtils.isEmpty(pagingKey) && url.contains(pagingKey);
         boolean isOffset = !StringUtils.isEmpty(offsetKey) && url.contains(offsetKey);
         boolean hasFirstKey = !StringUtils.isEmpty(firstKey);
-        Set<SpiderWebData> datas = Sets.newHashSet();
 
         if (!isOffset && !isPaging) {
-            return getDatas(url, htmlRule);
+            getDatas(taskInfo, htmlRule);
+            return;
         }
+
+        List<SpiderWebData> datas = Lists.newArrayList();
 
         if (isPaging && hasFirstKey) {
             int pageNo = 1;
@@ -64,9 +66,14 @@ public class HtmlParser extends BaseParser {
                 String finalUrl = url.replace(pagingKey, pageNo + "");
                 Document document = getWebContextDocument(finalUrl);
                 if (document == null) {
-                    return Lists.newArrayListWithCapacity(0);
+                    return;
                 }
                 datas.addAll(spiderContext(document, htmlRule, finalUrl));
+
+                if (datas.size() >= 200) {
+                    save(datas, taskInfo);
+                    datas.clear();
+                }
                 if (document.html().contains(firstKey)) {
                     break;
                 }
@@ -80,25 +87,31 @@ public class HtmlParser extends BaseParser {
                 String finalUrl = url.replace(offsetKey, offset + "");
                 Document document = getWebContextDocument(finalUrl);
                 if (document == null) {
-                    return Lists.newArrayListWithCapacity(0);
+                    return;
                 }
                 if (offset > 0 && document.html().contains(firstKey)) {
                     break;
                 }
+
                 datas.addAll(spiderContext(document, htmlRule, finalUrl));
+
+                if (datas.size() >= 200) {
+                    save(datas, taskInfo);
+                    datas.clear();
+                }
                 offset += limit;
             }
         }
 
-        return Lists.newArrayList(datas);
     }
 
-    private List<SpiderWebData> getDatas(String url, HtmlRule rule) {
-        Document document = getWebContextDocument(url);
+    private void getDatas(TaskDetailInfo taskInfo, HtmlRule rule) {
+        Document document = getWebContextDocument(taskInfo.getUrl());
         if (document == null) {
-            return Lists.newArrayListWithCapacity(0);
+            return;
         }
-        return spiderContext(document, rule, url);
+        List<SpiderWebData> datas = spiderContext(document, rule, taskInfo.getUrl());
+        save(datas, taskInfo);
     }
 
     private Document getWebContextDocument(String url) {
@@ -195,7 +208,7 @@ public class HtmlParser extends BaseParser {
      * @param type    类型
      * @return 数据
      */
-    protected SpiderWebData parseData(Element element, DataType type) {
+    private SpiderWebData parseData(Element element, DataType type) {
         SpiderWebData data;
         switch (type) {
             case TEXT:

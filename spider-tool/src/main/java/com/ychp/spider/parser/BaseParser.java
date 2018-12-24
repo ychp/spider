@@ -1,14 +1,21 @@
 package com.ychp.spider.parser;
 
 import com.google.common.collect.Maps;
+import com.ychp.common.exception.ResponseException;
 import com.ychp.common.util.HttpClientUtil;
+import com.ychp.spider.bean.response.TaskDetailInfo;
+import com.ychp.spider.enums.DataStatus;
 import com.ychp.spider.enums.DataType;
+import com.ychp.spider.model.SpiderData;
 import com.ychp.spider.parser.data.SpiderWebData;
 import com.ychp.spider.parser.rule.BaseRule;
+import com.ychp.spider.service.SpiderDataWriteService;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author yingchengpeng
@@ -17,6 +24,9 @@ import java.util.Map;
 @Slf4j
 public abstract class BaseParser {
 
+    @Resource
+    private SpiderDataWriteService spiderDataWriteService;
+
     /**
      * 获取解析类型
      *
@@ -24,18 +34,18 @@ public abstract class BaseParser {
      */
     public abstract String getType();
 
-    public List<SpiderWebData> spider(String url, String ruleJson) {
-        BaseRule rule = parseRule(ruleJson);
-        return spider(url, rule);
+    public void spider(TaskDetailInfo taskInfo) {
+        BaseRule rule = parseRule(taskInfo.getSpiderRule());
+        spider(taskInfo, rule);
     }
 
     /**
      * 数据抓取
-     * @param url 地址
-     * @param rule 规则
-     * @return 抓取数据
+     *
+     * @param taskInfo 任务信息
+     * @param rule     规则
      */
-    public abstract List<SpiderWebData> spider(String url, BaseRule rule);
+    public abstract void spider(TaskDetailInfo taskInfo, BaseRule rule);
 
     protected String getWebContext(String url, Map<String, String> headers) {
         String responseText;
@@ -65,5 +75,32 @@ public abstract class BaseParser {
      * @return 规则
      */
     protected abstract BaseRule parseRule(String ruleJson);
+
+    protected void save(List<SpiderWebData> spiderDatas, TaskDetailInfo taskInfo) {
+        List<SpiderData> datas = convert(spiderDatas, taskInfo);
+        if (!spiderDataWriteService.creates(datas)) {
+            throw new ResponseException("data.save.fail");
+        }
+        log.info("save task[id={}, node={}], datas = {}",
+                taskInfo.getId(), taskInfo.getParserId(), datas.size());
+    }
+
+    private List<SpiderData> convert(List<SpiderWebData> webDatas, TaskDetailInfo taskDetailInfo) {
+        return webDatas.stream().map(webData -> {
+            SpiderData spiderData = new SpiderData();
+            spiderData.setUserId(taskDetailInfo.getUserId());
+            spiderData.setParserId(taskDetailInfo.getParserId());
+            spiderData.setTaskId(taskDetailInfo.getId());
+            spiderData.setContent(webData.getContent());
+            spiderData.setUrl(webData.getUrl());
+            spiderData.setSource(webData.getSource());
+            spiderData.setType(webData.getType());
+            spiderData.setPath(webData.getPath());
+            spiderData.setLevel(webData.getLevel());
+            spiderData.setStatus(DataStatus.INIT.getValue());
+            spiderData.setUniqueCode(spiderData.generateUniqueCode());
+            return spiderData;
+        }).collect(Collectors.toList());
+    }
 
 }

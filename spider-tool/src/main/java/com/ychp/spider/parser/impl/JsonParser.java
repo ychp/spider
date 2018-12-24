@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.ychp.spider.bean.response.TaskDetailInfo;
 import com.ychp.spider.enums.DataType;
 import com.ychp.spider.parser.BaseParser;
 import com.ychp.spider.parser.data.SpiderWebData;
@@ -21,7 +21,6 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author yingchengpeng
@@ -40,34 +39,40 @@ public class JsonParser extends BaseParser {
     }
 
     @Override
-    public List<SpiderWebData> spider(String url, BaseRule rule) {
+    public void spider(TaskDetailInfo taskInfo, BaseRule rule) {
         JsonRule jsonRule = (JsonRule) rule;
 
-        if(StringUtils.isEmpty(jsonRule.getDataType())) {
+        if (StringUtils.isEmpty(jsonRule.getDataType())) {
             jsonRule.setDataType(DataType.TEXT.getText());
         }
 
-        if(!jsonRule.getIsPaging()) {
-            return getDatas(url, jsonRule);
+        if (!jsonRule.getIsPaging()) {
+            save(getDatas(taskInfo.getUrl(), jsonRule), taskInfo);
+            return;
         }
 
-        Set<SpiderWebData> datas = Sets.newHashSet();
-
+        List<SpiderWebData> datas = Lists.newArrayList();
+        String url = taskInfo.getUrl();
         int pageNo = 1;
         while (true) {
             String finalUrl = url.replace(jsonRule.getPagingKey(), pageNo + "");
-            List<SpiderWebData> results = getDatas(finalUrl, jsonRule);
-            if(results.isEmpty()) {
+            datas.addAll(getDatas(finalUrl, jsonRule));
+            if (datas.isEmpty()) {
                 break;
             }
-            datas.addAll(results);
-            pageNo ++;
+
+            if (datas.size() >= 200) {
+                save(datas, taskInfo);
+                datas.clear();
+            }
+            pageNo++;
         }
 
-        return Lists.newArrayList(datas);
     }
 
     private List<SpiderWebData> getDatas(String url, JsonRule rule) {
+        long pre = System.currentTimeMillis();
+
         String json = getWebContext(url,
                 ImmutableMap.of("Accept", "application/json"));
         JSONObject jsonObject = JSONObject.fromObject(json);
@@ -75,31 +80,34 @@ public class JsonParser extends BaseParser {
 
         int size = jsonArray.size();
         List<SpiderWebData> datas = Lists.newArrayListWithCapacity(size);
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             JSONObject item = jsonArray.getJSONObject(i);
             String content = getContent(item, rule.getContentKeys());
 
-            if(!skipCheck(DataType.fromText(rule.getDataType())) && !containsKeyWords(content, rule.getKeyWord())) {
+            if (!skipCheck(DataType.fromText(rule.getDataType())) && !containsKeyWords(content, rule.getKeyWord())) {
                 continue;
             }
 
             SpiderWebData data = new SpiderWebData();
             data.setContent(content);
             data.setUrl(rule.getDetailPre() + item.getString(rule.getDetailKey()));
+            data.setType(DataType.fromText(rule.getDataType()).getValue());
             datas.add(data);
         }
 
+        log.info("finish spider task[url={}], datas = {}, cost {} ms",
+                url, datas.size(), System.currentTimeMillis() - pre);
         return datas;
     }
 
     private boolean containsKeyWords(String content, List<String> keyWords) {
-        if(CollectionUtils.isEmpty(keyWords)) {
+        if (CollectionUtils.isEmpty(keyWords)) {
             return true;
         }
 
         String lowContent = content.toLowerCase();
-        for(String keyword : keyWords) {
-            if(lowContent.contains(keyword.toLowerCase())) {
+        for (String keyword : keyWords) {
+            if (lowContent.contains(keyword.toLowerCase())) {
                 return true;
             }
         }
@@ -108,7 +116,7 @@ public class JsonParser extends BaseParser {
 
     private String getContent(JSONObject item, List<String> keys) {
         StringBuilder sb = new StringBuilder();
-        for(String key : keys) {
+        for (String key : keys) {
             sb.append(item.getString(key));
         }
         return sb.toString();

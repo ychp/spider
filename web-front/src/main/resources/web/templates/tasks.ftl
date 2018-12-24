@@ -67,7 +67,7 @@
                                 <#if task.status == 0>
                                     <a class="btn btn-sm btn-success" href="#task" onclick="task(${task.id})">执行</a>
                                 </#if>
-                                <#if task.status == 2>
+                                <#if task.status == 2 || task.status == 1>
                                     <a class="btn btn-sm btn-success" href="/datas?taskId=${task.id}" target="_blank">结果</a>
                                 </#if>
                                 <#if task.status != 1>
