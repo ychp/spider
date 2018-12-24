@@ -7,7 +7,7 @@ git pull
 local_path=`pwd`
 
 echo 'package'
-mvn clean package -Dmaven.test.skip
+mvn clean package -Dmaven.test.skip -U
 
 echo 'make image'
 cp ${local_path}/web-starter/target/spider.jar ${local_path}/docker/prod/
