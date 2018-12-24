@@ -52,11 +52,6 @@
             contentType: "application/json",
             success: function (data) {
                 $("#detailId").html(data.ruleId + "-" + data.id);
-//                if(data.url != "" && data.url != undefined){
-//                    $("#detailImage").attr("src",data.url);
-//                }else{
-//                    $("#detailImage").attr("src","/favicon.ico");
-//                }
                 $("#video").attr("poster", data.url);
                 $("#videoSource").attr("src", data.content);
                 $("#detailPath").html(data.path);

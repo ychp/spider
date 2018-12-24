@@ -11,12 +11,16 @@
                 <form role="form">
                     <div class="form-group">
                         <label class="control-label col-lg-3">URL:</label>
-                        <textarea id="detailURL" style="width: 70%; max-width: 400px; word-break: break-all; resize: none;" disabled>
+                        <textarea id="detailURL"
+                                  style="width: 70%; max-width: 400px; word-break: break-all; resize: none;"
+                                  disabled>
                         </textarea>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-lg-3">Content:</label>
-                        <textarea id="detailContent" style="width: 70%; max-width: 400px; word-break: break-all; resize: none;" disabled>
+                        <textarea id="detailContent"
+                                  style="width: 70%; max-width: 400px; word-break: break-all; resize: none;"
+                                  rows="5" disabled>
                         </textarea>
                     </div>
                     <div class="form-group">
@@ -49,13 +53,13 @@
             contentType: "application/json",
             success: function (data) {
                 $("#detailId").html(data.ruleId + "-" + data.id);
-                if(data.url == "" || data.url == undefined){
+                if(data.url === "" || data.url === undefined){
                     $("#detailURL").html("无");
                 }else {
                     $("#detailURL").attr("title",data.url);
                     $("#detailURL").html(data.url);
                 }
-                $("#detailContent").html("<xmp>" + data.content + "</xmp>");
+                $("#detailContent").html(data.content);
                 $("#detailType").html(data.typeStr);
                 $("#detailStatus").html(data.statusStr);
                 $("#detailCreate").html(new Date(data.createdAt).Format("yyyy-MM-dd HH:mm:ss"));

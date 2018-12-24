@@ -30,7 +30,7 @@
             <p>Look like the page you're looking for isn't here anymore.
                 Try typing the address again or start over from the home page.</p>
             <div class="m-top-md">
-                <a href="index.html" class="btn btn-default btn-lg text-upper">Back to Home</a>
+                <a href="/" class="btn btn-default btn-lg text-upper">Back to Home</a>
             </div>
         </div><!-- ./error-inner -->
     </div><!-- ./error-wrapper -->

@@ -16,15 +16,15 @@
         <tr>
             <td style="width: 5%">${data.id?c}</td>
             <td style="width: 30%;">
-                <a href="${data.content?if_exists}" target="_blank">
+                <a href="${data.content!}" target="_blank">
                     <img src="${data.url}" title="${data.url}">
                 </a>
             </td>
             <td style="width: 10%">
                 ${data.ruleId?c}
             </td>
-            <td style="width: 7%">${data.typeStr?if_exists}</td>
-            <td style="width: 8%">${data.statusStr?if_exists}</td>
+            <td style="width: 7%">${data.typeStr!}</td>
+            <td style="width: 8%">${data.statusStr!}</td>
             <td style="width: 15%;">${data.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
             <td style="width: 20%">
                 <a class="btn btn-sm btn-success" href="#detail" onclick="showDetail(${data.id?c})" data-toggle="modal">Detail</a>

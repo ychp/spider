@@ -91,7 +91,7 @@
                                 ${album.name[0..20]}...
                                 <#else>
                                 ${album.name}
-                                </#if>(${album.size?if_exists})/
+                                </#if>(${album.size!})/
                                     <#if album.status==3 || album.status==4>
                                         <span style="color: #00aced">${album.statusStr}</span>
                                     <#else>

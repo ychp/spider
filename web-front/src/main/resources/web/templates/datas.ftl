@@ -88,7 +88,7 @@
                 <#else>
                     <@text.table ></@text.table>
                 </#if>
-                <@pagination pageNo=criteria.pageNo size=criteria.pageSize total=datas.total url='/datas'  params="&taskId=${criteria.taskId?if_exists}&type=${criteria.type?if_exists}"></@pagination>
+                <@pagination pageNo=criteria.pageNo size=criteria.pageSize total=datas.total url='/datas'  params="&taskId=${criteria.taskId!}&type=${criteria.type!}"></@pagination>
             </div>
         </div>
     </div>

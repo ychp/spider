@@ -48,7 +48,7 @@
             contentType: "application/json",
             success: function (data) {
                 $("#detailId").html(data.ruleId + "-" + data.id);
-                if(data.url != "" && data.url != undefined){
+                if(data.url !== "" && data.url !== undefined){
                     $("#detailImage").attr("src",data.url);
                 }else{
                     $("#detailImage").attr("src","/favicon.ico");

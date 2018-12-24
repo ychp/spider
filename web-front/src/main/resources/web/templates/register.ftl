@@ -54,13 +54,6 @@
                 <div class="form-group" id="confirmPassword" >
                     <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password">
                 </div>
-                <#--<div class="form-group">-->
-                    <#--<div class="custom-checkbox">-->
-                        <#--<input type="checkbox" id="chkAccept">-->
-                        <#--<label for="chkAccept"></label>-->
-                    <#--</div>-->
-                    <#--I accept the agreement-->
-                <#--</div>-->
 
                 <div class="m-top-md p-top-sm">
                     <a href="javascript:void(0)" id="signup" class="btn btn-success block">Create an accounts</a>

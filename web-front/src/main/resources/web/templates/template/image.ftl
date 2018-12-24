@@ -17,8 +17,8 @@
             <td style="max-width: 55%">
                 <img src="${data.url}" title="${data.url}">
             </td>
-            <td style="width: 7%">${data.typeStr?if_exists}</td>
-            <td style="width: 8%">${data.statusStr?if_exists}</td>
+            <td style="width: 7%">${data.typeStr!}</td>
+            <td style="width: 8%">${data.statusStr!}</td>
             <td style="width: 15%;">${data.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
             <td style="width: 10%">
                 <a class="btn btn-sm btn-success" href="#detail" onclick="showDetail(${data.id?c})" data-toggle="modal">Detail</a>
